@@ -1,4 +1,4 @@
-package org.acme.hibernate.orm;
+package org.acme.hibernate.orm.domain;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,7 +22,7 @@ public class Event {
     @Column(length = 100, unique = true)
     private String name;
 
-    @Column(unique = false)
+    @Column(length = 10000,unique = false)
     private String description;
 
     @Column(unique = false)
@@ -38,12 +38,12 @@ public class Event {
     private String image;
 
     @Column(unique = false)
-    private String status;
+    private Boolean status;
 
     public Event() {
     }
 
-    public Event(String name, Date startDate, Date endDate, String type, String image, String status, String description) {
+    public Event(String name, Date startDate, Date endDate, String type, String image, Boolean status, String description) {
         this.name = name ;
         this.startDate = startDate ;
         this.endDate = endDate ;
@@ -109,11 +109,11 @@ public class Event {
         this.image = image;
     }
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 }
