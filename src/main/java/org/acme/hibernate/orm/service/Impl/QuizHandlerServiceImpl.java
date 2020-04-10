@@ -48,6 +48,13 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
     }
 
     @Override
+    public void sendResult(BridgeEvent event, EventBus eventBus) {
+        JsonObject jsonObject = event.getRawMessage().getJsonObject("body");
+        LOG.info(jsonObject.getString("body"));
+        eventBus.publish("client/" + PollEnum.QUIZ.toString(), jsonObject);
+    }
+
+    @Override
     public void register(JsonObject body) {
         if(body.getString("type").equals("register")) {
             Integer idEvent = body.getInteger("event");

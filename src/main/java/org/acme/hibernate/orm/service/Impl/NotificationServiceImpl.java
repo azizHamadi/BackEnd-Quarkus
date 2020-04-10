@@ -49,8 +49,16 @@ public class NotificationServiceImpl implements NotificationService {
     public void onMessage(BridgeEvent event, EventBus eventBus) {
         JsonObject jsonObject = event.getRawMessage();
         String model = jsonObject.getString("address");
+
         if( model.equals( "server/" + PollEnum.QUIZ.toString() )){
-            this.quizHandlerService.sendQuiz(event,eventBus);
+            JsonObject body = event.getRawMessage().getJsonObject("body");
+            LOG.info(body.getString("mode"));
+            if(body.getString("mode").equals("question")){
+                this.quizHandlerService.sendQuiz(event,eventBus);
+            }
+            else{
+                this.quizHandlerService.sendResult(event,eventBus);
+            }
         }
         else if( model.equals(("server/" + PollEnum.QUESTION.toString() ))){
             this.questionHandlerService.sendFromWeb(event,eventBus);

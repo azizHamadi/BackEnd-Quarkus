@@ -48,16 +48,6 @@ public class eventBusTCPHandlerImpl implements IeventBusTCPHandler {
 
     @Override
     public void registerQuiz() {
-        vertx.eventBus().consumer("server/" + PollEnum.QUIZ.toString(), (Message<JsonObject> message) -> {
-            JsonObject body = message.body();
-            if(body.getString(PLATEFORME).equals("mobile")){
-                if(message.body().containsKey("type")){
-                    this.quizHandlerService.register(body);
-                }
-            }
-            else if ( body.getString(PLATEFORME).equals("server")){
-                this.quizHandlerService.generateResult(body);
-            }
-        });
+
     }
 }

@@ -11,6 +11,8 @@ public interface IQuizHandlerService {
 
     void sendQuiz(BridgeEvent event, EventBus eventBus);
 
+    void sendResult(BridgeEvent event, EventBus eventBus);
+
     void register(JsonObject body);
 
     void generateResult(JsonObject body);

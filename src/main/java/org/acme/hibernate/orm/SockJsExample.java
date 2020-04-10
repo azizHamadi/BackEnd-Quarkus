@@ -1,5 +1,10 @@
 package org.acme.hibernate.orm;
 
+import io.quarkus.oidc.AccessTokenCredential;
+import io.quarkus.security.identity.IdentityProviderManager;
+import io.quarkus.security.identity.request.TokenAuthenticationRequest;
+import io.quarkus.vertx.http.runtime.security.QuarkusHttpUser;
+import io.vertx.core.Future;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
@@ -8,6 +13,7 @@ import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.eventbus.bridge.tcp.TcpEventBusBridge;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.handler.impl.HttpStatusException;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
@@ -34,6 +40,8 @@ public class SockJsExample {
     private final QuizHandlerServiceImpl quizHandlerService;
     private final QuestionHandlerServiceImpl questionHandlerService;
     private final WordCloudHandlerServiceImpl wordCloudHandlerService;
+    private String user ;
+
 
     @Inject
     public SockJsExample(NotificationService notificationService, Vertx vertx, QuizHandlerServiceImpl quizHandlerService, QuestionHandlerServiceImpl questionHandlerService, WordCloudHandlerServiceImpl wordCloudHandlerService) {
@@ -58,8 +66,9 @@ public class SockJsExample {
                         .addInboundPermitted(new PermittedOptions().setAddressRegex("server/" + PollEnum.QUESTION.toString()))
                         .addInboundPermitted(new PermittedOptions().setAddressRegex("server/" + PollEnum.QUIZ.toString()))
                         .addInboundPermitted(new PermittedOptions().setAddressRegex("server/" + PollEnum.WORDCLOUD.toString()))
-                        );
+        );
         bridge.listen(7000, res -> System.out.println("Ready"));
+
         router.route("/ws/chat/*").handler(eventBusHandler(this.eventBus));
         router.route().handler(StaticHandler.create().setCachingEnabled(false));
     }
@@ -133,7 +142,6 @@ public class SockJsExample {
             sessions.put(key,addNewUsers(user));
         }
     }
-
     private List<String> addNewUsers(String user){
         List<String> users = new ArrayList<>();
         users.add(user);
