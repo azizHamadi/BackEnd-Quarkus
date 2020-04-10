@@ -25,15 +25,16 @@ public class QuestionHandlerServiceImpl implements IQuestionHandlerService {
     }
 
     @Override
-    public void sendFromMobile(JsonObject body) {
-        eventBus.publish("client/" + PollEnum.QUESTION.toString(), body);
+    public void sendFromMobile(JsonObject body, String session) {
+        LOG.info("question id event : " + session);
+        eventBus.publish("client/" + PollEnum.QUESTION.toString() + "/" + session, body);
     }
 
     @Override
-    public void sendFromWeb(BridgeEvent event, EventBus eventBus) {
+    public void sendFromWeb(BridgeEvent event, EventBus eventBus, String session) {
         JsonObject body = event.getRawMessage().getJsonObject("body");
         LOG.info(body.getString("body"));
-        eventBus.publish("client/" + PollEnum.QUESTION.toString(), body);
+        eventBus.publish("client/" + PollEnum.QUESTION.toString() + "/" + session, body);
     }
 
 }

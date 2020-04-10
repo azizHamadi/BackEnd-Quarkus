@@ -57,6 +57,7 @@
 
     let eventBus;
     var connected = false;
+    var token;
 
     $(document).ready(function () {
         $("#connect").click(connect);
@@ -83,7 +84,7 @@
 
     var connect = function () {
         if (!connected) {
-            var token = $("#name").val();
+            token = $("#name").val();
 
             eventBus = new EventBus('http://localhost:8089/ws/chat?session=' + token);
             eventBus.enableReconnect(true);
@@ -96,8 +97,8 @@
                 $("#msg").focus();
                 connected = true
 
-                eventBus.registerHandler('client/question', function (error, message) {
-                    if((message.body).event == 10) {
+                eventBus.registerHandler('client/question/' + token, function (error, message) {
+                    if((message.body).event == token) {
                         console.log("Got message: " + message.body);
                         try {
                             if ((message.body).mode == "all") {
@@ -125,9 +126,9 @@
             jsonObject["body"] = value;
             jsonObject["plateforme"] = "web";
             jsonObject["mode"] = "all";
-            jsonObject["event"] = 10;
-            console.log(jsonObject)
-            eventBus.send("server/question", jsonObject)
+            jsonObject["event"] = parseInt(token,10);
+            console.log(jsonObject);
+            eventBus.send("server/question", jsonObject);
             $("#msg").val("");
         }
     };

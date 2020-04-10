@@ -6,8 +6,8 @@ import io.vertx.ext.web.handler.sockjs.BridgeEvent;
 
 public interface IWordCloudHandlerServiceImpl {
 
-    void sendFromMobile(JsonObject body);
+    void sendFromMobile(JsonObject body, String session);
 
-    void sendFromWeb(BridgeEvent event, EventBus eventBus);
+    void sendFromWeb(BridgeEvent event, EventBus eventBus, String session);
 
 }

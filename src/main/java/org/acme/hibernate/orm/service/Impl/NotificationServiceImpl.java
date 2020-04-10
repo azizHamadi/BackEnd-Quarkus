@@ -47,24 +47,32 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void onMessage(BridgeEvent event, EventBus eventBus) {
+        LOG.info("hhhhhh");
+        LOG.info("aaaaa " + event.getRawMessage());
+
         JsonObject jsonObject = event.getRawMessage();
+        JsonObject body = jsonObject.getJsonObject("body");
+        LOG.info(body);
         String model = jsonObject.getString("address");
+        LOG.info(model);
+        String session = body.getInteger("event").toString();
+        LOG.info(session);
 
         if( model.equals( "server/" + PollEnum.QUIZ.toString() )){
-            JsonObject body = event.getRawMessage().getJsonObject("body");
             LOG.info(body.getString("mode"));
             if(body.getString("mode").equals("question")){
-                this.quizHandlerService.sendQuiz(event,eventBus);
+                this.quizHandlerService.sendQuiz(event,eventBus,session);
             }
             else{
-                this.quizHandlerService.sendResult(event,eventBus);
+                this.quizHandlerService.sendResult(event,eventBus,session);
             }
         }
-        else if( model.equals(("server/" + PollEnum.QUESTION.toString() ))){
-            this.questionHandlerService.sendFromWeb(event,eventBus);
+        else if( model.equals("server/" + PollEnum.QUESTION.toString() )){
+            LOG.info("question : " + session);
+            this.questionHandlerService.sendFromWeb(event,eventBus,session);
         }
-        else if( model.equals(("server/" + PollEnum.WORDCLOUD.toString() ))){
-            this.wordCloudHandlerService.sendFromWeb(event,eventBus);
+        else if( model.equals("server/" + PollEnum.WORDCLOUD.toString() )){
+            this.wordCloudHandlerService.sendFromWeb(event,eventBus,session);
         }
     }
 

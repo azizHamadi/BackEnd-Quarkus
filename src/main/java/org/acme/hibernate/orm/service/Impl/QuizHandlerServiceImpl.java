@@ -36,22 +36,24 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
     }
 
     @Override
-    public void sendQuiz(BridgeEvent event, EventBus eventBus) {
+    public void sendQuiz(BridgeEvent event, EventBus eventBus, String session) {
+        LOG.info("quiz question : " + session);
         JsonObject jsonObject = event.getRawMessage().getJsonObject("body");
         LOG.info(jsonObject.getString("body"));
         try {
             this.question = objectMapper.readValue(jsonObject.getString("body"), Question.class);
-            eventBus.publish("client/" + PollEnum.QUIZ.toString(), jsonObject);
+            eventBus.publish("client/" + PollEnum.QUIZ.toString() + "/" + session, jsonObject);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void sendResult(BridgeEvent event, EventBus eventBus) {
+    public void sendResult(BridgeEvent event, EventBus eventBus, String session) {
+        LOG.info("quiz reesult : " + session);
         JsonObject jsonObject = event.getRawMessage().getJsonObject("body");
         LOG.info(jsonObject.getString("body"));
-        eventBus.publish("client/" + PollEnum.QUIZ.toString(), jsonObject);
+        eventBus.publish("client/" + PollEnum.QUIZ.toString() + "/" + session, jsonObject);
     }
 
     @Override
@@ -64,7 +66,7 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
     }
 
     @Override
-    public void generateResult(JsonObject body) {
+    public void generateResult(JsonObject body, String session) {
         Integer idEvent = body.getInteger("event");
         try {
             if(body.containsKey("answers")){
@@ -75,7 +77,7 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
                 Float count = ((float) (reponseQuizMap.values().stream().filter(r ->
                         r.getId_reponse() == id_reponse).count() * 100) / this.sessions.get(idEvent).size());
                 this.question.getAnswers().stream().filter(r -> r.getId_reponse() == id_reponse).findFirst().get().setCount(count.longValue());
-                this.sendFromMobile();
+                this.sendFromMobile(session);
             }
         } catch (JsonProcessingException e) {
             LOG.info(e.getMessage());
@@ -83,11 +85,12 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
     }
 
     @Override
-    public void sendFromMobile() {
+    public void sendFromMobile(String session) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.put("body",JsonObject.mapFrom(this.question));
         jsonObject.put("plateforme","mobile");
-        eventBus.publish("client/" + PollEnum.QUIZ.toString(), jsonObject);
+        LOG.info("aaaaaaa " + session);
+        eventBus.publish("client/" + PollEnum.QUIZ.toString() + "/" + session, jsonObject);
     }
 
     @Override

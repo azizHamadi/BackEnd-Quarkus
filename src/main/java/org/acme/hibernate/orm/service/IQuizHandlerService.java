@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface IQuizHandlerService {
 
-    void sendQuiz(BridgeEvent event, EventBus eventBus);
+    void sendQuiz(BridgeEvent event, EventBus eventBus, String session);
 
-    void sendResult(BridgeEvent event, EventBus eventBus);
+    void sendResult(BridgeEvent event, EventBus eventBus, String session);
 
     void register(JsonObject body);
 
-    void generateResult(JsonObject body);
+    void generateResult(JsonObject body, String session);
 
-    void sendFromMobile();
+    void sendFromMobile(String session);
 
     void addSession(Integer key, String user);
 

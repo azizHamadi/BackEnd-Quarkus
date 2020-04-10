@@ -25,14 +25,15 @@ public class WordCloudHandlerServiceImpl implements IWordCloudHandlerServiceImpl
 
 
     @Override
-    public void sendFromMobile(JsonObject body) {
-        eventBus.publish("client/" + PollEnum.WORDCLOUD.toString(), body);
+    public void sendFromMobile(JsonObject body, String session) {
+        eventBus.publish("client/" + PollEnum.WORDCLOUD.toString() + "/" + session, body);
     }
 
     @Override
-    public void sendFromWeb(BridgeEvent event, EventBus eventBus) {
+    public void sendFromWeb(BridgeEvent event, EventBus eventBus, String session) {
+        LOG.info(session);
         JsonObject body = event.getRawMessage().getJsonObject("body");
         LOG.info(body.getString("body"));
-        eventBus.publish("client/" + PollEnum.WORDCLOUD.toString(), body);
+        eventBus.publish("client/" + PollEnum.WORDCLOUD.toString() + "/" + session, body);
     }
 }
