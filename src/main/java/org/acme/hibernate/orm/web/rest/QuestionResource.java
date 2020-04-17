@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -28,10 +29,7 @@ import java.util.List;
 public class QuestionResource {
     private static final Logger LOGGER = Logger.getLogger(QuestionResource.class.getName());
 
-    @Inject
-    Vertx vertx;
-
-    @Inject
+    @PersistenceContext
     EntityManager entityManager;
 
     @Inject

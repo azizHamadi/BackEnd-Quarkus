@@ -23,6 +23,9 @@ public class Question implements Serializable {
     @Column
     private String text;
 
+    @ManyToOne
+    private Quiz quiz;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reponse> responses=new ArrayList<>();
 
@@ -61,12 +64,21 @@ public class Question implements Serializable {
         this.text = text;
     }
 
+    public Quiz getQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
+
     @Override
     public String toString() {
         return "Question{" +
                 "id_question=" + id_question +
                 ", text='" + text + '\'' +
-                ", answers=" + responses +
+                ", quiz=" + quiz +
+                ", responses=" + responses +
                 '}';
     }
 }

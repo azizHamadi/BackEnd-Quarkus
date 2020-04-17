@@ -7,14 +7,10 @@ import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObjectBuilder;
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
+import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 import java.util.List;
 
 @Path("events")
@@ -27,7 +23,7 @@ public class EventResource {
     @Inject
     EventRepository eventRepository;
 
-    @Inject
+    @PersistenceContext
     EntityManager entityManager;
 
     @GET

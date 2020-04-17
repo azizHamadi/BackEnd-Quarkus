@@ -1,5 +1,6 @@
 package org.acme.hibernate.orm;
 
+import io.quarkus.vertx.ConsumeEvent;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
@@ -47,6 +48,7 @@ public class SockJsExample {
         this.bridgeOption = bridgeOption;
     }
 
+    @ConsumeEvent(value = "blocking-consumer", blocking = true)
     public void init(@Observes Router router) {
         router.route("/ws/chat/*").handler(routingContext -> {
             session = routingContext.request().getParam("session");
@@ -65,10 +67,9 @@ public class SockJsExample {
                     this.bridgeOption.getBridgeOptionMobile()
             );
             bridge.listen(7000, res -> System.out.println("Ready"));
-
-            router.route("/ws/chat/*").handler(eventBusHandler(this.eventBus));
             routingContext.next();
         });
+        router.route("/ws/chat/*").handler(eventBusHandler(this.eventBus));
         router.route().handler(StaticHandler.create().setCachingEnabled(false));
     }
 
@@ -80,7 +81,6 @@ public class SockJsExample {
                 notificationService.onOpen(event,eventBus);
             }
             if (event.type() == BridgeEventType.SEND) {
-                LOG.info("rrrrrr");
                 notificationService.onMessage(event,eventBus);
             }
             if (event.type() == BridgeEventType.SOCKET_CLOSED) {

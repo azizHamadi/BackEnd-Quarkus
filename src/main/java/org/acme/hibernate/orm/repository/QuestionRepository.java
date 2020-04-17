@@ -23,7 +23,7 @@ public class QuestionRepository implements IQuestionRepository {
     public Question findEventById(int id) {
         Question question = entityManager.find(Question.class, id);
         if (question == null) {
-            throw new WebApplicationException("Event with id of " + id + " does not exist.", 404);
+            throw new WebApplicationException("Quiestion with id of " + id + " does not exist.", 404);
         }
         return question;
     }

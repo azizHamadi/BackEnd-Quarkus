@@ -1,13 +1,11 @@
 package org.acme.hibernate.orm.web.rest;
 
-import io.vertx.core.Vertx;
 import org.acme.hibernate.orm.domain.Reponse;
 import org.acme.hibernate.orm.service.ReponseService;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.persistence.EntityManager;
@@ -24,8 +22,6 @@ import javax.ws.rs.ext.Provider;
 @Consumes("application/json")
 public class ReponseResource {
     private static final Logger LOGGER = Logger.getLogger(ReponseResource.class.getName());
-    @Inject
-    Vertx vertx;
 
     @PersistenceContext
     EntityManager entityManager;
