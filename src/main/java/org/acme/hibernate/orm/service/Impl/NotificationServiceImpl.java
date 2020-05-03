@@ -63,8 +63,11 @@ public class NotificationServiceImpl implements NotificationService {
             if(body.getString("mode").equals("question")){
                 this.quizHandlerService.sendQuiz(event,eventBus,session);
             }
-            else{
+            else if(body.getString("mode").equals("result")){
                 this.quizHandlerService.sendResult(event,eventBus,session);
+            }
+            else{
+                this.quizHandlerService.sendScore(event,eventBus,session);
             }
         }
         else if( model.equals("server/" + PollEnum.QUESTION.toString() )){

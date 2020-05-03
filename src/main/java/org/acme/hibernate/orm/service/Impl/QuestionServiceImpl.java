@@ -33,5 +33,4 @@ public class QuestionServiceImpl implements IQuestionService {
         questionRepository.deleteQuestion(id);
     }
 
-
 }

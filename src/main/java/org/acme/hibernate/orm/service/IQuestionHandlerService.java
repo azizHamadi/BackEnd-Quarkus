@@ -10,5 +10,4 @@ public interface IQuestionHandlerService {
 
     void sendFromWeb(BridgeEvent event, EventBus eventBus, String session);
 
-
 }

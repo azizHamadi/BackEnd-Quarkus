@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 @Path("quiz")
 @ApplicationScoped
@@ -42,6 +43,13 @@ public class QuizResource {
         return Response.status(204).build();
     }
 
+    @GET
+    @Path("/event/{id}")
+    public List<Quiz> getByEvent(@PathParam int id) {
+        LOGGER.info(id);
+        List<Quiz> quizzes = quizRepository.findByEvent(id);
+        return quizzes;
+    }
     /*@PUT
     public Response update(Quiz quiz) {
         Quiz quizUploaded = quizRepository.updateQuiz(quiz);

@@ -13,6 +13,8 @@ public interface IQuizHandlerService {
 
     void sendResult(BridgeEvent event, EventBus eventBus, String session);
 
+    void sendScore(BridgeEvent event, EventBus eventBus, String session);
+
     void register(JsonObject body);
 
     void generateResult(JsonObject body, String session);
@@ -22,5 +24,7 @@ public interface IQuizHandlerService {
     void addSession(Integer key, String user);
 
     List<String> addNewUsers(String user);
+
+    void addScore(String user, Integer score);
 
 }

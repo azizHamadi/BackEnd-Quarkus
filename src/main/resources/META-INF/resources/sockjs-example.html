@@ -46,6 +46,7 @@
         <input class="col-md-6" id="msg" type="text" placeholder="enter your message">
         <button class="col-md-1 btn btn-primary" id="send" type="button" disabled>send question</button>
         <button class="col-md-1 btn btn-primary" id="sendResponse" type="button" disabled>send response</button>
+        <button class="col-md-1 btn btn-primary" id="sendScores" type="button" disabled>send score</button>
     </div>
 
 </div>
@@ -64,6 +65,7 @@
         $("#connect").click(connect);
         $("#send").click(sendMessage);
         $("#sendResponse").click(sendReponse);
+        $("#sendScores").click(sendScores);
 
         $("#name").keypress(function (event) {
             if (event.keyCode == 13 || event.which == 13) {
@@ -95,6 +97,7 @@
                 console.log("Connected to the web socket");
                 $("#send").attr("disabled", false);
                 $("#sendResponse").attr("disabled", false);
+                $("#sendScores").attr("disabled", false);
                 $("#connect").attr("disabled", true);
                 $("#name").attr("disabled", true);
                 $("#msg").focus();
@@ -148,6 +151,17 @@
             console.log(jsonObject)
             eventBus.send("server/quiz", jsonObject)
             $("#msg").val("");
+        }
+    };
+
+    var sendScores = function () {
+        if (connected) {
+            var jsonObject = {};
+            jsonObject["plateforme"] = "web";
+            jsonObject["event"] = parseInt(token,10);
+            jsonObject["mode"] = "scores";
+            console.log(jsonObject)
+            eventBus.send("server/quiz", jsonObject)
         }
     };
 

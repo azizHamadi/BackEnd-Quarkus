@@ -1,8 +1,10 @@
 package org.acme.hibernate.orm.repository;
 
+import org.acme.hibernate.orm.SockJsExample;
 import org.acme.hibernate.orm.domain.Event;
 import org.acme.hibernate.orm.domain.Question;
 import org.acme.hibernate.orm.domain.Quiz;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @ApplicationScoped
 public class QuizRepository implements IQuizRepository {
+    private static final Logger LOG = Logger.getLogger(QuizRepository.class);
 
     @Inject
     EntityManager entityManager;
@@ -49,7 +52,6 @@ public class QuizRepository implements IQuizRepository {
         List<Quiz> quiz = entityManager.createQuery("select q from Quiz q " +
                 "where q.event = " + id , Quiz.class).getResultList();
         return quiz ;
-
     }
 
 }

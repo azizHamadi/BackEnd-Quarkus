@@ -64,10 +64,6 @@ public class Question implements Serializable {
         this.text = text;
     }
 
-    public Quiz getQuiz() {
-        return quiz;
-    }
-
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
@@ -77,7 +73,6 @@ public class Question implements Serializable {
         return "Question{" +
                 "id_question=" + id_question +
                 ", text='" + text + '\'' +
-                ", quiz=" + quiz +
                 ", responses=" + responses +
                 '}';
     }
