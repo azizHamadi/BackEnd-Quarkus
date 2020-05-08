@@ -10,4 +10,8 @@ public interface IQuestionHandlerService {
 
     void sendFromWeb(BridgeEvent event, EventBus eventBus, String session);
 
+    void sendModerateur(String session);
+
+    void sendFromModerateur(BridgeEvent event, EventBus eventBus, String session);
+
 }

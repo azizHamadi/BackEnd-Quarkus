@@ -32,9 +32,16 @@ public class QuestionMessageResource {
         return questionMessageRepository.findAll();
     }
 
+    @GET
+    @Path("/event/{id}")
+    public List<QuestionMessage> getByEvent(@PathParam Long id) {
+        return questionMessageRepository.findByEvent(id);
+    }
+
     @POST
-    public Response create(QuestionMessage questionMessage) {
-        questionMessageRepository.createQuestionMessage(questionMessage);
+    @Path("/{id}")
+    public Response create(QuestionMessage questionMessage,@PathParam Long id) {
+        questionMessageRepository.createQuestionMessage(questionMessage, id);
         return Response.ok(questionMessage).status(201).build();
     }
 

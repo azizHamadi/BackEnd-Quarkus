@@ -2,6 +2,7 @@ package org.acme.hibernate.orm.repository;
 
 import org.acme.hibernate.orm.domain.Question;
 import org.acme.hibernate.orm.domain.QuestionMessage;
+import org.acme.hibernate.orm.domain.Quiz;
 import org.acme.hibernate.orm.service.Impl.QuestionHandlerServiceImpl;
 import org.jboss.logging.Logger;
 
@@ -35,8 +36,24 @@ public class QuestionMessageRepository implements IQuestionMessageRepository {
     }
 
     @Transactional
-    public void createQuestionMessage(QuestionMessage questionMessage) {
+    public void createQuestionMessage(QuestionMessage questionMessage, Long id) {
         LOG.info(questionMessage);
-        entityManager.persist(questionMessage);
+        questionMessage.setVerify(!QuestionHandlerServiceImpl.moderateurSession.get(id.toString()));
+        List<QuestionMessage> newQuestionMessage = entityManager.createQuery("select qM from QuestionMessage qM " +
+                "where qM.event = " + id + " and qM.text_message = '" + questionMessage.getText_message() +
+                "' and qM.userName = '" + questionMessage.getUserName() +"'"
+                , QuestionMessage.class).getResultList();
+        if( newQuestionMessage.size() == 0 ) {
+            entityManager.persist(questionMessage);
+        }
     }
+
+    @Transactional
+    public List<QuestionMessage> findByEvent(Long id) {
+        List<QuestionMessage> questionMessages = entityManager.createQuery("select qM from QuestionMessage qM " +
+                "where qM.event = " + id , QuestionMessage.class).getResultList();
+        return questionMessages ;
+    }
+
+
 }

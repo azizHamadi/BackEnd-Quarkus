@@ -72,7 +72,15 @@ public class NotificationServiceImpl implements NotificationService {
         }
         else if( model.equals("server/" + PollEnum.QUESTION.toString() )){
             LOG.info("question : " + session);
-            this.questionHandlerService.sendFromWeb(event,eventBus,session);
+            if(body.getString("mode").equals("all") || body.getString("mode").equals("like") || body.getString("mode").equals("dislike")){
+                this.questionHandlerService.sendFromWeb(event,eventBus,session);
+            }
+            else if(body.getString("mode").equals("update")){
+                this.questionHandlerService.sendModerateur(session);
+            }
+            else if(body.getString("mode").equals("verify")){
+                this.questionHandlerService.sendFromModerateur(event,eventBus,session);
+            }
         }
         else if( model.equals("server/" + PollEnum.WORDCLOUD.toString() )){
             this.wordCloudHandlerService.sendFromWeb(event,eventBus,session);

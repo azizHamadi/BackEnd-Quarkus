@@ -32,7 +32,7 @@ public class QuestionMessage implements Serializable {
     private String userName;
 
     @Column
-    private Long weight;
+    private Boolean verify;
 
     @Column(nullable = false)
     @CreationTimestamp
@@ -44,19 +44,19 @@ public class QuestionMessage implements Serializable {
     public QuestionMessage() {
     }
 
-    public QuestionMessage(String text_message, String color, String userName, Long weight){
+    public QuestionMessage(String text_message, String color, String userName, Boolean verify){
         this.text_message = text_message;
         this.color = color;
         this.userName = userName;
-        this.weight = weight;
+        this.verify = verify;
     }
 
-    public QuestionMessage(Long id_questionMessage, String text_message, String color, String userName, Long weight){
+    public QuestionMessage(Long id_questionMessage, String text_message, String color, String userName, Boolean verify){
         this.id_questionMessage = id_questionMessage;
         this.text_message = text_message;
         this.color = color;
         this.userName = userName;
-        this.weight = weight;
+        this.verify = verify;
     }
 
     public Long getId_questionMessage() {
@@ -91,14 +91,6 @@ public class QuestionMessage implements Serializable {
         this.userName = userName;
     }
 
-    public Long getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Long weight) {
-        this.weight = weight;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -107,12 +99,16 @@ public class QuestionMessage implements Serializable {
         this.date = date;
     }
 
-    /*public Event getEvent() {
-        return event;
-    }*/
-
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public Boolean getVerify() {
+        return verify;
+    }
+
+    public void setVerify(Boolean verify) {
+        this.verify = verify;
     }
 
     @Override
@@ -122,9 +118,8 @@ public class QuestionMessage implements Serializable {
                 ", text_message='" + text_message + '\'' +
                 ", color='" + color + '\'' +
                 ", userName='" + userName + '\'' +
-                ", weight=" + weight +
+                ", verify=" + verify +
                 ", date=" + date +
-                //", event=" + event +
                 '}';
     }
 }

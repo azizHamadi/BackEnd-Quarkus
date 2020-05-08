@@ -13,6 +13,8 @@ import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.HashMap;
+import java.util.Map;
 
 @Singleton
 public class QuestionHandlerServiceImpl implements IQuestionHandlerService {
@@ -21,6 +23,7 @@ public class QuestionHandlerServiceImpl implements IQuestionHandlerService {
     private final EventBus eventBus;
     private ObjectMapper objectMapper;
     private final QuestionMessageRepository questionMessageRepository;
+    public static Map<String, Boolean> moderateurSession = new HashMap<>();
 
     @Inject
     public QuestionHandlerServiceImpl(EventBus eventBus, QuestionMessageRepository questionMessageRepository) {
@@ -32,13 +35,12 @@ public class QuestionHandlerServiceImpl implements IQuestionHandlerService {
     @Override
     public void sendFromMobile(JsonObject body, String session) {
         LOG.info("question id event : " + session);
-        LOG.info(body);
-        QuestionMessage questionMessage = null;
-        try {
-            questionMessage = objectMapper.readValue(body.toString(), QuestionMessage.class);
-            LOG.info(questionMessage);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        if( !QuestionHandlerServiceImpl.moderateurSession.containsKey(session)){
+            QuestionHandlerServiceImpl.moderateurSession.put(session,false);
+        }
+        if( QuestionHandlerServiceImpl.moderateurSession.get(session) == true && body.getString("mode").equals("all")){
+            body.remove("mode");
+            body.put("mode","moderateur");
         }
         eventBus.publish("client/" + PollEnum.QUESTION.toString() + "/" + session, body);
     }
@@ -47,15 +49,32 @@ public class QuestionHandlerServiceImpl implements IQuestionHandlerService {
     public void sendFromWeb(BridgeEvent event, EventBus eventBus, String session) {
         JsonObject body = event.getRawMessage().getJsonObject("body");
         LOG.info(body.getString("body"));
-        QuestionMessage questionMessage = null;
-        try {
-            questionMessage = objectMapper.readValue(body.getString("body"), QuestionMessage.class);
-            LOG.info(questionMessage);
-            //this.questionMessageRepository.createQuestionMessage(questionMessage);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        if( !QuestionHandlerServiceImpl.moderateurSession.containsKey(session)){
+            QuestionHandlerServiceImpl.moderateurSession.put(session,false);
+        }
+        if( QuestionHandlerServiceImpl.moderateurSession.get(session) == true){
+            body.remove("mode");
+            body.put("mode","moderateur");
         }
         eventBus.publish("client/" + PollEnum.QUESTION.toString() + "/" + session, body);
     }
 
+    @Override
+    public void sendModerateur(String session) {
+        if (QuestionHandlerServiceImpl.moderateurSession.containsKey(session)) {
+            Boolean moderateur = QuestionHandlerServiceImpl.moderateurSession.get(session);
+            QuestionHandlerServiceImpl.moderateurSession.put(session,!moderateur);
+        }
+        else{
+            QuestionHandlerServiceImpl.moderateurSession.put(session,true);
+        }
+        QuestionHandlerServiceImpl.moderateurSession.values().forEach(m -> LOG.info(m));
+    }
+
+    @Override
+    public void sendFromModerateur(BridgeEvent event, EventBus eventBus, String session) {
+        JsonObject body = event.getRawMessage().getJsonObject("body");
+        LOG.info(body.getString("body"));
+        eventBus.publish("client/" + PollEnum.QUESTION.toString() + "/" + session, body);
+    }
 }

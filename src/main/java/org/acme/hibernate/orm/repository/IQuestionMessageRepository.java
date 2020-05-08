@@ -7,6 +7,6 @@ import java.util.List;
 public interface IQuestionMessageRepository {
     List<QuestionMessage> findAll();
     QuestionMessage findQuestionMessageById(int id);
-    void createQuestionMessage(QuestionMessage questionMessage);
-
+    void createQuestionMessage(QuestionMessage questionMessage, Long id);
+    List<QuestionMessage> findByEvent(Long id);
 }
