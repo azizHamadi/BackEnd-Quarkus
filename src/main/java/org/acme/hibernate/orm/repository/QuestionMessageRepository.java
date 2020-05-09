@@ -40,8 +40,7 @@ public class QuestionMessageRepository implements IQuestionMessageRepository {
         LOG.info(questionMessage);
         questionMessage.setVerify(!QuestionHandlerServiceImpl.moderateurSession.get(id.toString()));
         List<QuestionMessage> newQuestionMessage = entityManager.createQuery("select qM from QuestionMessage qM " +
-                "where qM.event = " + id + " and qM.text_message = '" + questionMessage.getText_message() +
-                "' and qM.userName = '" + questionMessage.getUserName() +"'"
+                "where qM.event = " + id + " and qM.text_message = '" + questionMessage.getText_message() + "'"
                 , QuestionMessage.class).getResultList();
         if( newQuestionMessage.size() == 0 ) {
             entityManager.persist(questionMessage);
