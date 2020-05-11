@@ -48,6 +48,7 @@
         <button class="col-md-1 btn btn-primary" id="like" type="button">Like</button>
         <button class="col-md-1 btn btn-primary" id="disLike" type="button" disabled>DisLike</button>
         <button class="col-md-1 btn btn-primary" id="moderateur" type="button">moderateur</button>
+        <button class="col-md-1 btn btn-primary" id="SendModerateur" type="button">send moderateur</button>
     </div>
 
 </div>
@@ -68,6 +69,7 @@
         $("#like").click(sendLike);
         $("#moderateur").click(sendModerateur);
         $("#disLike").click(sendDisLike);
+        $("#SendModerateur").click(sendVerify);
 
         $("#name").keypress(function (event) {
             if (event.keyCode == 13 || event.which == 13) {
@@ -92,7 +94,7 @@
         if (!connected) {
             token = $("#name").val();
 
-            eventBus = new EventBus('http://localhost:8089/ws/chat?session=' + token);
+            eventBus = new EventBus('http://54f4e1f6.ngrok.io/ws/chat?session=' + token);
             eventBus.enableReconnect(true);
             eventBus.onopen = function () {
 
@@ -107,7 +109,7 @@
                     if((message.body).event == token) {
                         console.log("Got message: " + message.body);
                         try {
-                            if ((message.body).mode == "all") {
+                            if ((message.body).mode == "all" || (message.body).mode == "verify") {
                                 console.log(message.body)
                                 $("#chat").append((message.body).body + "\n");
                             }
@@ -147,6 +149,21 @@
             jsonObject["body"] = value;
             jsonObject["plateforme"] = "web";
             jsonObject["mode"] = "like";
+            jsonObject["event"] = parseInt(token,10);
+            console.log(jsonObject);
+            eventBus.send("server/question", jsonObject);
+            $("#msg").val("");
+        }
+    };
+
+    var sendVerify = function () {
+        if (connected) {
+            var value = $("#msg").val();
+            console.log("Sending " + value);
+            var jsonObject = {};
+            jsonObject["body"] = value;
+            jsonObject["plateforme"] = "web";
+            jsonObject["mode"] = "verify";
             jsonObject["event"] = parseInt(token,10);
             console.log(jsonObject);
             eventBus.send("server/question", jsonObject);

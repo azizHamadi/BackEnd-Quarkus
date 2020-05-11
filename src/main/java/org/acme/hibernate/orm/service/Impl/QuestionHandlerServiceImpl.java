@@ -41,6 +41,12 @@ public class QuestionHandlerServiceImpl implements IQuestionHandlerService {
         if( QuestionHandlerServiceImpl.moderateurSession.get(session) == true && body.getString("mode").equals("all")){
             body.remove("mode");
             body.put("mode","moderateur");
+            String questionString = body.getString("body");
+            JsonObject questionBody = new JsonObject(questionString);
+            questionBody.remove("verify");
+            questionBody.put("verify",false);
+            body.remove("body");
+            body.put("body",questionBody);
         }
         eventBus.publish("client/" + PollEnum.QUESTION.toString() + "/" + session, body);
     }
@@ -55,6 +61,12 @@ public class QuestionHandlerServiceImpl implements IQuestionHandlerService {
         if( QuestionHandlerServiceImpl.moderateurSession.get(session) == true){
             body.remove("mode");
             body.put("mode","moderateur");
+            String questionString = body.getString("body");
+            JsonObject questionBody = new JsonObject(questionString);
+            questionBody.remove("verify");
+            questionBody.put("verify",false);
+            body.remove("body");
+            body.put("body",questionBody);
         }
         eventBus.publish("client/" + PollEnum.QUESTION.toString() + "/" + session, body);
     }
@@ -74,7 +86,12 @@ public class QuestionHandlerServiceImpl implements IQuestionHandlerService {
     @Override
     public void sendFromModerateur(BridgeEvent event, EventBus eventBus, String session) {
         JsonObject body = event.getRawMessage().getJsonObject("body");
-        LOG.info(body.getString("body"));
+        String questionString = body.getString("body");
+        JsonObject questionBody = new JsonObject(questionString);
+        questionBody.remove("verify");
+        questionBody.put("verify",true);
+        body.remove("body");
+        body.put("body",questionBody);
         eventBus.publish("client/" + PollEnum.QUESTION.toString() + "/" + session, body);
     }
 }
