@@ -1,35 +1,31 @@
 package org.acme.hibernate.orm.domain;
 
+import io.vertx.core.json.JsonObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Score {
-    private String user;
-    private Integer score;
+    public Map<Integer,List<JsonObject>> scoreQuizMap;
 
-    public Score(String user, Integer score) {
-        this.user = user;
-        this.score = score;
+    public Score() {
+        scoreQuizMap = new HashMap<>();
     }
 
-    public String getUser() {
-        return user;
+    public Map<Integer, List<JsonObject>> getScoreQuizMap() {
+        return scoreQuizMap;
     }
 
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
+    public void setScoreQuizMap(Map<Integer, List<JsonObject>> scoreQuizMap) {
+        this.scoreQuizMap = scoreQuizMap;
     }
 
     @Override
     public String toString() {
         return "Score{" +
-                "user='" + user + '\'' +
-                ", score=" + score +
+                "scoreQuizMap=" + scoreQuizMap +
                 '}';
     }
 }

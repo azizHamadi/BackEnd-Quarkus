@@ -30,6 +30,9 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
     public Map<Integer, List<String>> sessions = new HashMap<>();
 
     public Map<String, Reponse> reponseQuizMap = new HashMap<>();
+    public Map<String,Score> scoresMap = new HashMap<>();
+
+
     public List<JsonObject> jsonScores = new ArrayList<>();
     public List<Score> scoreList = new ArrayList<>();
     public Map<String,Integer> scoresUser = new HashMap<>();
@@ -66,7 +69,9 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
     public void sendScore(BridgeEvent event, EventBus eventBus, String session) {
         LOG.info("quiz score : " + session);
         JsonObject jsonObject = event.getRawMessage().getJsonObject("body");
-        List<JsonObject> sortedList = jsonScores.stream().sorted((s1,s2) -> Integer.compare(s2.getInteger("score"),s1.getInteger("score")))
+        LOG.info(jsonObject);
+        List<JsonObject> scoreSession = scoresMap.get(session).getScoreQuizMap().get(jsonObject.getInteger("quiz"));
+        List<JsonObject> sortedList = scoreSession.stream().sorted((s1,s2) -> Integer.compare(s2.getInteger("score"),s1.getInteger("score")))
                 .collect(Collectors.toList());
         jsonObject.put("body",sortedList);
         LOG.info(jsonObject);
@@ -85,15 +90,16 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
     @Override
     public void generateResult(JsonObject body, String session) {
         Integer idEvent = body.getInteger("event");
+        Integer idQuiz = body.getInteger("quiz");
         LOG.info(body);
         try {
             if(body.containsKey("answers")){
                 Reponse reponse = objectMapper.readValue(body.getValue("answers").toString(), Reponse.class);
                 String user = body.getValue("user").toString();
                 if(reponse.isRep())
-                    this.addScore(user,1);
+                    this.addScore(session,idQuiz,user,1);
                 else
-                    this.addScore(user,0);
+                    this.addScore(session,idQuiz,user,0);
                 int id_reponse = Math.toIntExact(reponse.getId_reponse());
                 reponseQuizMap.put(user,reponse);
                 Float count = ((float) (reponseQuizMap.values().stream().filter(r ->
@@ -134,16 +140,35 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
     }
 
     @Override
-    public void addScore(String user, Integer score){
+    public void addScore(String session,Integer idQuiz, String user, Integer score){
+        if (scoresMap.containsKey(session)){
+            Score scoresSession = scoresMap.get(session);
+            if( scoresSession.getScoreQuizMap().containsKey(idQuiz)){
+                List<JsonObject> newJsonScore = this.addJsonScore(scoresSession.getScoreQuizMap().get(idQuiz),user,score);
+                scoresSession.getScoreQuizMap().put(idQuiz,newJsonScore);
+            }
+            else{
+                scoresSession.getScoreQuizMap().put(idQuiz,addJsonScore(new ArrayList<JsonObject>(),user,score));
+            }
+            scoresMap.put(session,scoresSession);
+        }
+        else{
+            Score newScore = new Score();
+            newScore.getScoreQuizMap().put(idQuiz,addJsonScore(new ArrayList<JsonObject>(),user,score));
+            scoresMap.put(session,newScore);
+        }
+    }
+
+    public List<JsonObject> addJsonScore(List<JsonObject> jsonScores,String user, Integer score){
         OptionalInt index = IntStream.range(0, jsonScores.size())
                 .filter(i -> user.equals(jsonScores.get(i).getString("user")))
                 .findFirst();
         LOG.info("index = ");
         LOG.info(index);
         if (index.isPresent())
-            this.jsonScores.get(index.getAsInt()).put("score",this.jsonScores.get(index.getAsInt()).getInteger("score") + score);
+            jsonScores.get(index.getAsInt()).put("score",jsonScores.get(index.getAsInt()).getInteger("score") + score);
         else
-            this.jsonScores.add(new JsonObject().put("user",user).put("score",score));
+            jsonScores.add(new JsonObject().put("user",user).put("score",score));
+        return jsonScores ;
     }
-
 }

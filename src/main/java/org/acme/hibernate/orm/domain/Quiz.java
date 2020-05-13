@@ -40,9 +40,9 @@ public class Quiz {
         this.name = name;
     }
 
-    public Event getEvent() {
+    /*public Event getEvent() {
         return event;
-    }
+    }*/
 
     public void setEvent(Event event) {
         this.event = event;

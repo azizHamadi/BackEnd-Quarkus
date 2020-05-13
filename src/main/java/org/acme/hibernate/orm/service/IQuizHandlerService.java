@@ -25,6 +25,6 @@ public interface IQuizHandlerService {
 
     List<String> addNewUsers(String user);
 
-    void addScore(String user, Integer score);
+    void addScore(String session, Integer idQuiz, String user, Integer score);
 
 }
