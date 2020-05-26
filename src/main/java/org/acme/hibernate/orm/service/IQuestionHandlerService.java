@@ -14,4 +14,6 @@ public interface IQuestionHandlerService {
 
     void sendFromModerateur(BridgeEvent event, EventBus eventBus, String session);
 
+    void sendReponse(BridgeEvent event, EventBus eventBus, String session);
+
 }

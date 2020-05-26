@@ -58,7 +58,7 @@ public class NotificationServiceImpl implements NotificationService {
         String session = body.getInteger("event").toString();
         LOG.info(session);
 
-        if( model.equals( "server/" + PollEnum.QUIZ.toString() )){
+        if( model.equals( "server/" + PollEnum.QUIZ.toString() )){ /////// quiz handler ///////////
             LOG.info(body.getString("mode"));
             if(body.getString("mode").equals("question")){
                 this.quizHandlerService.sendQuiz(event,eventBus,session);
@@ -70,7 +70,7 @@ public class NotificationServiceImpl implements NotificationService {
                 this.quizHandlerService.sendScore(event,eventBus,session);
             }
         }
-        else if( model.equals("server/" + PollEnum.QUESTION.toString() )){
+        else if( model.equals("server/" + PollEnum.QUESTION.toString() )){ /////// question handler ///////////
             LOG.info("question : " + session);
             if(body.getString("mode").equals("all") || body.getString("mode").equals("like") || body.getString("mode").equals("dislike")){
                 this.questionHandlerService.sendFromWeb(event,eventBus,session);
@@ -81,8 +81,11 @@ public class NotificationServiceImpl implements NotificationService {
             else if(body.getString("mode").equals("verify")){
                 this.questionHandlerService.sendFromModerateur(event,eventBus,session);
             }
+            else if(body.getString("mode").equals("reponse")){
+                this.questionHandlerService.sendReponse(event,eventBus,session);
+            }
         }
-        else if( model.equals("server/" + PollEnum.WORDCLOUD.toString() )){
+        else if( model.equals("server/" + PollEnum.WORDCLOUD.toString() )){ /////// wordCloud handler ///////////
             this.wordCloudHandlerService.sendFromWeb(event,eventBus,session);
         }
     }

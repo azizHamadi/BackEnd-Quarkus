@@ -31,11 +31,6 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
 
     public Map<String, Reponse> reponseQuizMap = new HashMap<>();
     public Map<String,Score> scoresMap = new HashMap<>();
-
-
-    public List<JsonObject> jsonScores = new ArrayList<>();
-    public List<Score> scoreList = new ArrayList<>();
-    public Map<String,Integer> scoresUser = new HashMap<>();
     public Question question ;
 
     @Inject
@@ -118,7 +113,6 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
         jsonObject.put("body",JsonObject.mapFrom(this.question));
         jsonObject.put("plateforme","mobile");
         LOG.info("aaaaaaa " + session);
-        LOG.info(scoreList);
         eventBus.publish("client/" + PollEnum.QUIZ.toString() + "/" + session, jsonObject);
     }
 

@@ -1,5 +1,6 @@
 package org.acme.hibernate.orm.repository;
 
+import org.acme.hibernate.orm.domain.QuestionMessage;
 import org.acme.hibernate.orm.domain.ReponseMessage;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface IReponseMessageRepository {
     void createReponseMessage(ReponseMessage reponseMessage);
     void deleteReponseMessage(int id);
     List<ReponseMessage> findByEvent(int id);
+    List<ReponseMessage> findByEventQuestion(Long id,String text_message);
 }

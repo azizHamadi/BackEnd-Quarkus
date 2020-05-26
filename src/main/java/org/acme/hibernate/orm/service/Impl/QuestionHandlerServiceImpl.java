@@ -94,4 +94,11 @@ public class QuestionHandlerServiceImpl implements IQuestionHandlerService {
         body.put("body",questionBody);
         eventBus.publish("client/" + PollEnum.QUESTION.toString() + "/" + session, body);
     }
+
+    @Override
+    public void sendReponse(BridgeEvent event, EventBus eventBus, String session) {
+        JsonObject body = event.getRawMessage().getJsonObject("body");
+        LOG.info(body.getString("body"));
+        eventBus.publish("client/" + PollEnum.QUESTION.toString() + "/" + session, body);
+    }
 }

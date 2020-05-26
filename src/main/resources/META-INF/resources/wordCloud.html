@@ -46,6 +46,7 @@
         <input class="col-md-6" id="msg" type="text" placeholder="enter your message">
         <button class="col-md-1 btn btn-primary" id="send" type="button" disabled>send</button>
         <button class="col-md-1 btn btn-primary" id="sendWord" type="button" disabled>Send word</button>
+        <button class="col-md-1 btn btn-primary" id="sendResult" type="button" >Send Result</button>
     </div>
 
 </div>
@@ -64,6 +65,7 @@
         $("#connect").click(connect);
         $("#send").click(sendQuestion);
         $("#sendWord").click(sendMessage);
+        $("#sendResult").click(sendResult);
 
         $("#name").keypress(function (event) {
             if (event.keyCode == 13 || event.which == 13) {
@@ -88,7 +90,7 @@
         if (!connected) {
             token = $("#name").val();
 
-            eventBus = new EventBus('http://3704cb41.ngrok.io/ws/chat?session=' + token);
+            eventBus = new EventBus('http://e6536d40.ngrok.io/ws/chat?session=' + token);
             eventBus.enableReconnect(true);
             eventBus.onopen = function () {
 
@@ -148,6 +150,17 @@
             console.log(jsonObject)
             eventBus.send("server/wordCloud", jsonObject)
             $("#msg").val("");
+        }
+    };
+
+    var sendResult = function () {
+        if (connected) {
+            var jsonObject = {};
+            jsonObject["plateforme"] = "web";
+            jsonObject["mode"] = "result";
+            jsonObject["event"] = parseInt(token,10);
+            console.log(jsonObject)
+            eventBus.send("server/wordCloud", jsonObject)
         }
     };
 

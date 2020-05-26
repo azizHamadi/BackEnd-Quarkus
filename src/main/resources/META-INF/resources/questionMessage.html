@@ -49,6 +49,7 @@
         <button class="col-md-1 btn btn-primary" id="disLike" type="button" disabled>DisLike</button>
         <button class="col-md-1 btn btn-primary" id="moderateur" type="button">moderateur</button>
         <button class="col-md-1 btn btn-primary" id="SendModerateur" type="button">send moderateur</button>
+        <button class="col-md-1 btn btn-primary" id="SendReponse" type="button">send reponse</button>
     </div>
 
 </div>
@@ -70,6 +71,7 @@
         $("#moderateur").click(sendModerateur);
         $("#disLike").click(sendDisLike);
         $("#SendModerateur").click(sendVerify);
+        $("#SendReponse").click(sendReponse);
 
         $("#name").keypress(function (event) {
             if (event.keyCode == 13 || event.which == 13) {
@@ -94,7 +96,7 @@
         if (!connected) {
             token = $("#name").val();
 
-            eventBus = new EventBus('http://54f4e1f6.ngrok.io/ws/chat?session=' + token);
+            eventBus = new EventBus('http://localhost:8089/ws/chat?session=' + token);
             eventBus.enableReconnect(true);
             eventBus.onopen = function () {
 
@@ -134,6 +136,21 @@
             jsonObject["body"] = value;
             jsonObject["plateforme"] = "web";
             jsonObject["mode"] = "all";
+            jsonObject["event"] = parseInt(token,10);
+            console.log(jsonObject);
+            eventBus.send("server/question", jsonObject);
+            $("#msg").val("");
+        }
+    };
+
+    var sendReponse = function () {
+        if (connected) {
+            var value = $("#msg").val();
+            console.log("Sending " + value);
+            var jsonObject = {};
+            jsonObject["body"] = value;
+            jsonObject["plateforme"] = "web";
+            jsonObject["mode"] = "reponse";
             jsonObject["event"] = parseInt(token,10);
             console.log(jsonObject);
             eventBus.send("server/question", jsonObject);

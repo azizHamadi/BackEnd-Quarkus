@@ -1,12 +1,12 @@
-package org.acme.hibernate.orm.repository;
-
-import org.acme.hibernate.orm.domain.Quiz;
+import org.acme.hibernate.orm.domain.QuestionMessage;
 import org.acme.hibernate.orm.domain.ReponseMessage;
+import org.acme.hibernate.orm.repository.IReponseMessageRepository;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import javax.ws.rs.WebApplicationException;
 import java.util.List;
 
@@ -50,4 +50,17 @@ public class ReponseMessageRepository implements IReponseMessageRepository {
                 "where rM.event = " + id , ReponseMessage.class).getResultList();
         return reponseMessages ;
     }
+
+    @Transactional
+    @Override
+    public List<ReponseMessage> findByEventQuestion(Long id,String text_message) {
+        QuestionMessage questionMessage = entityManager.createQuery("select qM from QuestionMessage qM " +
+                        "where qM.event = " + id + " and qM.text_message = '" + text_message + "'"
+                , QuestionMessage.class).getSingleResult();
+        LOG.info(questionMessage);
+        List<ReponseMessage> reponseMessages= entityManager.createQuery("select rM from ReponseMessage rM " +
+                "where rM.questionMessage = " + questionMessage.getId_questionMessage() , ReponseMessage.class).getResultList();
+        return reponseMessages ;
+    }
+
 }

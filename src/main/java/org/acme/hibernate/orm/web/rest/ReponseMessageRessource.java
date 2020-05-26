@@ -2,8 +2,8 @@ package org.acme.hibernate.orm.web.rest;
 
 import org.acme.hibernate.orm.domain.Quiz;
 import org.acme.hibernate.orm.domain.ReponseMessage;
+import org.acme.hibernate.orm.repository.IReponseMessageRepository;
 import org.acme.hibernate.orm.repository.QuizRepository;
-import org.acme.hibernate.orm.repository.ReponseMessageRepository;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -23,7 +23,7 @@ public class ReponseMessageRessource {
     private static final Logger LOGGER = Logger.getLogger(ReponseMessageRessource.class.getName());
 
     @Inject
-    private ReponseMessageRepository reponseMessageRepository;
+    private IReponseMessageRepository reponseMessageRepository;
 
     @GET
     public List<ReponseMessage> getAll() {

@@ -33,7 +33,7 @@ public class WordCloudHandlerServiceImpl implements IWordCloudHandlerServiceImpl
     public void sendFromWeb(BridgeEvent event, EventBus eventBus, String session) {
         LOG.info(session);
         JsonObject body = event.getRawMessage().getJsonObject("body");
-        LOG.info(body.getString("body"));
+        LOG.info(body);
         eventBus.publish("client/" + PollEnum.WORDCLOUD.toString() + "/" + session, body);
     }
 }

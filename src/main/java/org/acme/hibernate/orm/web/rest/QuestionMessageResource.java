@@ -1,10 +1,12 @@
 package org.acme.hibernate.orm.web.rest;
 
+import io.vertx.core.json.JsonObject;
 import org.acme.hibernate.orm.domain.Question;
 import org.acme.hibernate.orm.domain.QuestionMessage;
 import org.acme.hibernate.orm.repository.QuestionMessageRepository;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
+import org.jose4j.json.internal.json_simple.JSONObject;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -34,7 +36,7 @@ public class QuestionMessageResource {
 
     @GET
     @Path("/event/{id}")
-    public List<QuestionMessage> getByEvent(@PathParam Long id) {
+    public List<JSONObject> getByEvent(@PathParam Long id) {
         return questionMessageRepository.findByEvent(id);
     }
 
