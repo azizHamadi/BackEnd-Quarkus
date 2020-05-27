@@ -11,4 +11,5 @@ public interface IQuestionMessageRepository {
     QuestionMessage findQuestionMessageById(int id);
     void createQuestionMessage(QuestionMessage questionMessage, Long id);
     List<JSONObject> findByEvent(Long id);
+    QuestionMessage findByTextMessage(QuestionMessage questionMessage, Long id);
 }

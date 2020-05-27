@@ -31,20 +31,25 @@ public class ReponseMessage implements Serializable {
     private Date date;
 
     @ManyToOne
+    private UserDTO user;
+
+    @ManyToOne
     private QuestionMessage questionMessage;
 
     public ReponseMessage() {
     }
 
-    public ReponseMessage(String text_reponse, QuestionMessage questionMessage){
+    public ReponseMessage(String text_reponse, QuestionMessage questionMessage, UserDTO user){
         this.text_reponse = text_reponse;
         this.questionMessage = questionMessage;
+        this.user = user;
     }
 
-    public ReponseMessage(Long id_reponseMessage, String text_reponse, QuestionMessage questionMessage){
+    public ReponseMessage(Long id_reponseMessage, String text_reponse, QuestionMessage questionMessage, UserDTO user){
         this.id_reponseMessage = id_reponseMessage;
         this.text_reponse = text_reponse;
         this.questionMessage = questionMessage;
+        this.user = user;
     }
 
     public Long getId_reponseMessage() {
@@ -69,6 +74,10 @@ public class ReponseMessage implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     /*public QuestionMessage getQuestionMessage() {

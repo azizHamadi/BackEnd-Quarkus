@@ -5,6 +5,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "questionMessage")
@@ -28,8 +29,8 @@ public class QuestionMessage implements Serializable {
     @Column
     private String color;
 
-    @Column
-    private String userName;
+    @ManyToOne
+    private UserDTO user;
 
     @Column
     private Boolean verify;
@@ -41,21 +42,24 @@ public class QuestionMessage implements Serializable {
     @ManyToOne
     private Event event;
 
+    @OneToMany(mappedBy = "messageQuestion")
+    List<Aime> likes;
+
     public QuestionMessage() {
     }
 
-    public QuestionMessage(String text_message, String color, String userName, Boolean verify){
+    public QuestionMessage(String text_message, String color, UserDTO user, Boolean verify){
         this.text_message = text_message;
         this.color = color;
-        this.userName = userName;
+        this.user = user;
         this.verify = verify;
     }
 
-    public QuestionMessage(Long id_questionMessage, String text_message, String color, String userName, Boolean verify){
+    public QuestionMessage(Long id_questionMessage, String text_message, String color, UserDTO user, Boolean verify){
         this.id_questionMessage = id_questionMessage;
         this.text_message = text_message;
         this.color = color;
-        this.userName = userName;
+        this.user = user;
         this.verify = verify;
     }
 
@@ -83,12 +87,12 @@ public class QuestionMessage implements Serializable {
         this.color = color;
     }
 
-    public String getUserName() {
-        return userName;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     public Date getDate() {
@@ -111,13 +115,16 @@ public class QuestionMessage implements Serializable {
         this.verify = verify;
     }
 
+    public void setLikes(List<Aime> likes) {
+        this.likes = likes;
+    }
+
     @Override
     public String toString() {
         return "QuestionMessage{" +
                 "id_questionMessage=" + id_questionMessage +
                 ", text_message='" + text_message + '\'' +
                 ", color='" + color + '\'' +
-                ", userName='" + userName + '\'' +
                 ", verify=" + verify +
                 ", date=" + date +
                 '}';

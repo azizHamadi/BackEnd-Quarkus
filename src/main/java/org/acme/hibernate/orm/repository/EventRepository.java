@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.WebApplicationException;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -19,8 +20,10 @@ public class EventRepository {
     EntityManager entityManager;
 
     public List<Event> findAll() {
-        return entityManager.createNamedQuery("Events.findAll", Event.class)
+        List<Event> events = entityManager.createNamedQuery("Events.findAll", Event.class)
                 .getResultList();
+        events.sort(Comparator.comparing(o -> o.getStartDate()));
+        return events ;
     }
 
     public Event findEventById(int id) {
@@ -56,13 +59,7 @@ public class EventRepository {
         entityManager.remove(c);
     }
 
-    @GET
-    @Path("/getbyStatus/{status}")
-    public Event[] getByStatus(@PathParam String status) {
-        Event[] events = entityManager.createQuery("select event from Event event " +
-                "where event.status = " + status , Event.class).getResultList().toArray(new Event[0]);
-        return events ;
-    }
+
 
     @GET
     @Path("/getbyType/{type}")

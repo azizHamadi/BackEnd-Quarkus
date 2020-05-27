@@ -1,10 +1,7 @@
 package org.acme.hibernate.orm.repository;
 
 import io.vertx.core.json.Json;
-import org.acme.hibernate.orm.domain.Question;
-import org.acme.hibernate.orm.domain.QuestionMessage;
-import org.acme.hibernate.orm.domain.Quiz;
-import org.acme.hibernate.orm.domain.ReponseMessage;
+import org.acme.hibernate.orm.domain.*;
 import org.acme.hibernate.orm.service.Impl.QuestionHandlerServiceImpl;
 import org.jboss.logging.Logger;
 import org.jose4j.json.internal.json_simple.JSONObject;
@@ -23,6 +20,9 @@ public class QuestionMessageRepository implements IQuestionMessageRepository {
 
     @Inject
     IReponseMessageRepository reponseMessageRepository;
+
+    @Inject
+    ILikeRepository likeRepository;
 
     @Inject
     EntityManager entityManager;
@@ -61,12 +61,25 @@ public class QuestionMessageRepository implements IQuestionMessageRepository {
                 "where qM.event = " + id , QuestionMessage.class).getResultList();
         questionMessages.forEach(q -> {
             List<ReponseMessage> reponseMessages = reponseMessageRepository.findByEventQuestion(id,q.getText_message());
+            List<Aime> likes = likeRepository.getLikebyQuestion(q,id);
             JSONObject questionObject = new JSONObject();
             questionObject.put("question", q);
+            questionObject.put("likes",likes);
             questionObject.put("reponses", reponseMessages);
             listQuestion.add(questionObject);
         });
         return listQuestion ;
     }
+
+    @Override
+    public QuestionMessage findByTextMessage(QuestionMessage questionMessage, Long id) {
+        LOG.info(id);
+        LOG.info(questionMessage);
+        LOG.info("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        QuestionMessage question = entityManager.createQuery("select qM from QuestionMessage qM " +
+                "where qM.event = " + id + " and qM.text_message = '" + questionMessage.getText_message() + "'", QuestionMessage.class).getSingleResult();
+        return question ;
+    }
+
 
 }

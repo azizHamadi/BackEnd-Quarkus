@@ -1,6 +1,9 @@
+package org.acme.hibernate.orm.repository;
+
 import org.acme.hibernate.orm.domain.QuestionMessage;
 import org.acme.hibernate.orm.domain.ReponseMessage;
 import org.acme.hibernate.orm.repository.IReponseMessageRepository;
+import org.acme.hibernate.orm.repository.QuestionMessageRepository;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -17,6 +20,9 @@ public class ReponseMessageRepository implements IReponseMessageRepository {
 
     @Inject
     EntityManager entityManager;
+
+    @Inject
+    QuestionMessageRepository questionMessageRepository ;
 
     @Override
     public List<ReponseMessage> findAll() {
