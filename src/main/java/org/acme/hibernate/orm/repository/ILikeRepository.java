@@ -13,4 +13,6 @@ public interface ILikeRepository {
 
     void addLike(Aime like, Long id);
 
+    void deleteLike(Aime like, Long id);
+
 }

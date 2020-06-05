@@ -55,8 +55,8 @@ public class EventResource {
     public Event[] getByStatus(@PathParam String status) {
         LOGGER.info("aaaaaa");
         List<Event> events = entityManager.createQuery("select event from Event event " +
-                "where event.status = " + Boolean.parseBoolean(status) , Event.class).getResultList();
-        events.sort(Comparator.comparing(Event::getStartDate));
+                "where event.status = " + Boolean.parseBoolean(status) + " order by event.startDate" , Event.class).getResultList();
+        //events.sort(Comparator.comparing(Event::getStartDate));
 
         return events.toArray(new Event[0]) ;
         //Event[] events = entityManager.createQuery("select event from Event event " +"where event.status = " + Boolean.parseBoolean(status), Event.class).getResultList().toArray(new Event[0]);

@@ -81,7 +81,7 @@ public class NotificationServiceImpl implements NotificationService {
             else if(body.getString("mode").equals("verify")){
                 this.questionHandlerService.sendFromModerateur(event,eventBus,session);
             }
-            else if(body.getString("mode").equals("reponse") || body.getString("mode").equals("delete")){
+            else if(body.getString("mode").equals("reponse") || body.getString("mode").equals("delete") || body.getString("mode").equals("order")){
                 this.questionHandlerService.sendReponse(event,eventBus,session);
             }
         }

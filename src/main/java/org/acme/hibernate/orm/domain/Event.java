@@ -40,10 +40,13 @@ public class Event {
     @Column(unique = false)
     private Boolean status;
 
+    @ManyToOne
+    private UserDTO user;
+
     public Event() {
     }
 
-    public Event(String name, Date startDate, Date endDate, String type, String image, Boolean status, String description) {
+    public Event(String name, Date startDate, Date endDate, String type, String image, Boolean status, String description, UserDTO user) {
         this.name = name ;
         this.startDate = startDate ;
         this.endDate = endDate ;
@@ -51,6 +54,7 @@ public class Event {
         this.image = image ;
         this.status = status ;
         this.description = description ;
+        this.user = user ;
     }
 
     public String getDescription() {
@@ -115,5 +119,13 @@ public class Event {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 }

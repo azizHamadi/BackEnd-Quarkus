@@ -80,9 +80,9 @@ public class ReponseMessage implements Serializable {
         this.user = user;
     }
 
-    /*public QuestionMessage getQuestionMessage() {
+    public QuestionMessage getQuestionMessage() {
         return questionMessage;
-    }*/
+    }
 
     public void setQuestionMessage(QuestionMessage questionMessage) {
         this.questionMessage = questionMessage;

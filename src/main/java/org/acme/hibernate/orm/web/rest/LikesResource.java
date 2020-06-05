@@ -35,6 +35,14 @@ public class LikesResource {
     public Response create(Aime like, @PathParam Long id) {
         LOGGER.info(like);
         likeRepository.addLike(like, id);
-        return Response.ok(like).status(201).build();
+        return Response.ok().status(201).build();
+    }
+
+    @POST
+    @Path("/delete/{id}")
+    public Response delete(Aime like, @PathParam Long id) {
+        LOGGER.info(like);
+        likeRepository.deleteLike(like, id);
+        return Response.ok().status(201).build();
     }
 }

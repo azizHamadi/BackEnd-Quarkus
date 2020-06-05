@@ -50,6 +50,10 @@
         <button class="col-md-1 btn btn-primary" id="moderateur" type="button">moderateur</button>
         <button class="col-md-1 btn btn-primary" id="SendModerateur" type="button">send moderateur</button>
         <button class="col-md-1 btn btn-primary" id="SendReponse" type="button">send reponse</button>
+        <button class="col-md-1 btn btn-primary" id="SendDelete" type="button">send delete</button>
+        <button class="col-md-1 btn btn-primary" id="SendOrder" type="button">change order</button>
+        <input class="col-md-6" id="order" type="text" placeholder="enter your order">
+
     </div>
 
 </div>
@@ -72,6 +76,8 @@
         $("#disLike").click(sendDisLike);
         $("#SendModerateur").click(sendVerify);
         $("#SendReponse").click(sendReponse);
+        $("#SendDelete").click(sendDelete);
+        $("#SendOrder").click(sendOrder);
 
         $("#name").keypress(function (event) {
             if (event.keyCode == 13 || event.which == 13) {
@@ -136,6 +142,38 @@
             jsonObject["body"] = value;
             jsonObject["plateforme"] = "web";
             jsonObject["mode"] = "all";
+            jsonObject["event"] = parseInt(token,10);
+            console.log(jsonObject);
+            eventBus.send("server/question", jsonObject);
+            $("#msg").val("");
+        }
+    };
+
+    var sendOrder = function () {
+        if (connected) {
+            var value = $("#msg").val();
+            var orderVal = $("#order").val();
+            console.log("order " + value);
+            var jsonObject = {};
+            jsonObject["body"] = value;
+            jsonObject["plateforme"] = "web";
+            jsonObject["mode"] = "order";
+            jsonObject["order"] = parseInt(orderVal,10);
+            jsonObject["event"] = parseInt(token,10);
+            console.log(jsonObject);
+            eventBus.send("server/question", jsonObject);
+            $("#msg").val("");
+        }
+    };
+
+    var sendDelete = function () {
+        if (connected) {
+            var value = $("#msg").val();
+            console.log("Sending " + value);
+            var jsonObject = {};
+            jsonObject["body"] = value;
+            jsonObject["plateforme"] = "web";
+            jsonObject["mode"] = "delete";
             jsonObject["event"] = parseInt(token,10);
             console.log(jsonObject);
             eventBus.send("server/question", jsonObject);

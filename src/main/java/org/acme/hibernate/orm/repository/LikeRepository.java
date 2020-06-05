@@ -42,4 +42,14 @@ public class LikeRepository implements ILikeRepository {
         newLike.setUserDTO(like.getUserDTO());
         entityManager.persist(newLike);
     }
+
+    @Override
+    @Transactional
+    public void deleteLike(Aime like, Long id) {
+        QuestionMessage questionMessage = like.getMessageQuestion();
+        QuestionMessage question = questionMessageRepository.findByTextMessage(questionMessage, id);
+        Aime deletedLike = entityManager.createQuery("select l from Aime l " +
+                "where l.messageQuestion = " + question.getId_questionMessage() + " and l.userDTO = '" + like.getUserDTO().getId() + "'" , Aime.class).getSingleResult();
+        entityManager.remove(deletedLike);
+    }
 }
