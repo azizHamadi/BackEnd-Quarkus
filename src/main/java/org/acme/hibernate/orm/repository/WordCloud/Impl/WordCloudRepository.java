@@ -65,7 +65,7 @@ public class WordCloudRepository implements IWordCloudRepository {
     @Override
     public List<JSONObject> findByEvent(Long id) {
         List<WordCloud> wordClouds = entityManager.createQuery("select w from WordCloud w " +
-                "where w.event = " + id , WordCloud.class).getResultList();
+                "where w.status = true and w.event = " + id , WordCloud.class).getResultList();
         List<JSONObject> listWordCloud = new ArrayList<>();
         wordClouds.forEach(w -> {
             List<Word> words = wordRepository.getWordbyWordWloud(w.getId());

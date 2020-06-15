@@ -21,6 +21,9 @@ public class WordCloud {
     @Column
     private String text;
 
+    @Column(unique = false)
+    private Boolean status;
+
     @ManyToOne
     private UserDTO user;
 
@@ -30,10 +33,11 @@ public class WordCloud {
     @ManyToOne
     private Event event;
 
-    public WordCloud(String text, UserDTO user, Event event) {
+    public WordCloud(String text, UserDTO user, Event event, Boolean status) {
         this.text = text ;
         this.user = user ;
         this.event = event ;
+        this.status = status ;
     }
 
     public WordCloud() {
@@ -63,6 +67,14 @@ public class WordCloud {
         this.user = user;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     public void setWords(List<Word> words) {
         this.words = words;
     }
@@ -76,6 +88,7 @@ public class WordCloud {
         return "WordCloud{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
+                ", status=" + status +
                 ", user=" + user +
                 ", words=" + words +
                 ", event=" + event +
