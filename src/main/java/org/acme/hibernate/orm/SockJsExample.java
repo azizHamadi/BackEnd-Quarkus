@@ -1,6 +1,7 @@
 package org.acme.hibernate.orm;
 
 import io.quarkus.vertx.ConsumeEvent;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
@@ -41,6 +42,8 @@ public class SockJsExample {
     public SockJsExample(NotificationService notificationService, Vertx vertx, QuizHandlerServiceImpl quizHandlerService, QuestionHandlerServiceImpl questionHandlerService, WordCloudHandlerServiceImpl wordCloudHandlerService, BridgeOptionImpl bridgeOption) {
         this.notificationService = notificationService;
         this.vertx = vertx;
+        //jdida lel test hedhi
+        this.vertx.timerStream(3601000);
         this.eventBus = vertx.eventBus();
         this.quizHandlerService = quizHandlerService;
         this.questionHandlerService = questionHandlerService;
@@ -59,9 +62,11 @@ public class SockJsExample {
             this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.QUESTION.toString(),"client/" + PollEnum.QUESTION.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.QUIZ.toString(),"client/" + PollEnum.QUIZ.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.WORDCLOUD.toString(),"client/" + PollEnum.WORDCLOUD.toString() + "/" + session);
+            this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.SONDAGE.toString(),"client/" + PollEnum.SONDAGE.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionWeb("server/" + PollEnum.QUESTION.toString() ,"client/" + PollEnum.QUESTION.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionWeb("server/" + PollEnum.QUIZ.toString() ,"client/" + PollEnum.QUIZ.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionWeb("server/" + PollEnum.WORDCLOUD.toString() ,"client/" + PollEnum.WORDCLOUD.toString() + "/" + session);
+            this.bridgeOption.setBridgeOptionWeb("server/" + PollEnum.SONDAGE.toString() ,"client/" + PollEnum.SONDAGE.toString() + "/" + session);
             TcpEventBusBridge bridge = TcpEventBusBridge.create(
                     vertx,
                     this.bridgeOption.getBridgeOptionMobile()
@@ -98,7 +103,10 @@ public class SockJsExample {
             String session = body.getInteger("event").toString();
             if(body.getString(PLATEFORME).equals("mobile")){
                 if(message.body().containsKey("type")){
-                    this.quizHandlerService.register(body);
+                    if(message.body().getString("type") == "register")
+                        this.quizHandlerService.register(body);
+                    else if(message.body().getString("type") == "logout")
+                        this.quizHandlerService.logout(body);
                 }
             }
             else if ( body.getString(PLATEFORME).equals("server")){
@@ -125,6 +133,17 @@ public class SockJsExample {
             String session = body.getInteger("event").toString();
             if(body.getString(PLATEFORME).equals("mobile")){
                 this.wordCloudHandlerService.sendFromMobile(body,session);
+            }
+        });
+    }
+
+    public void registerSondage() {
+        vertx.eventBus().consumer("server/" + PollEnum.SONDAGE.toString() , (Message<JsonObject> message) -> {
+            JsonObject body = message.body();
+            LOG.info(body);
+            String session = body.getInteger("event").toString();
+            if(body.getString(PLATEFORME).equals("mobile")){
+                //sondage methode
             }
         });
     }

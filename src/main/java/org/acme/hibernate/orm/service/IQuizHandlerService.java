@@ -6,6 +6,7 @@ import io.vertx.ext.web.handler.sockjs.BridgeEvent;
 import org.acme.hibernate.orm.domain.Question;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IQuizHandlerService {
 
@@ -17,13 +18,15 @@ public interface IQuizHandlerService {
 
     void register(JsonObject body);
 
+    void logout(JsonObject body);
+
     void generateResult(JsonObject body, String session);
 
     void sendFromMobile(String session);
 
     void addSession(Integer key, String user);
 
-    List<String> addNewUsers(String user);
+    Set<String> addNewUsers(String user);
 
     void addScore(String session, Integer idQuiz, String user, Integer score);
 

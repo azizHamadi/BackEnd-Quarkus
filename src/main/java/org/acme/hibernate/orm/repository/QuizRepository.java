@@ -37,12 +37,12 @@ public class QuizRepository implements IQuizRepository {
 
     @Override
     @Transactional
-    public void createQuestion(Quiz quiz) {
+    public void createQuiz(Quiz quiz) {
         entityManager.persist(quiz);
     }
 
     @Override
-    public void deleteQuestion(int id) {
+    public void deleteQuiz(int id) {
         Quiz q = findQuizById(id);
         entityManager.remove(q);
     }

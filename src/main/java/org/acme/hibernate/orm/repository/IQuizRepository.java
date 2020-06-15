@@ -8,7 +8,7 @@ import java.util.List;
 public interface IQuizRepository {
     List<Quiz> findAll();
     Quiz findQuizById(int id);
-    void createQuestion(Quiz quiz);
-    void deleteQuestion(int id);
+    void createQuiz(Quiz quiz);
+    void deleteQuiz(int id);
     List<Quiz> findByEvent(int id);
 }

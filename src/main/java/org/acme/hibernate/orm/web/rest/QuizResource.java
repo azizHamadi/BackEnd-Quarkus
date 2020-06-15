@@ -33,13 +33,13 @@ public class QuizResource {
 
     @POST
     public Response create(Quiz quiz) {
-        quizRepository.createQuestion(quiz);
+        quizRepository.createQuiz(quiz);
         return Response.ok(quiz).status(201).build();
     }
 
     @DELETE
     public Response delete(@QueryParam("id") int id) {
-        quizRepository.deleteQuestion(id);
+        quizRepository.deleteQuiz(id);
         return Response.status(204).build();
     }
 

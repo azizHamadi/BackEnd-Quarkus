@@ -30,10 +30,6 @@ public class QuestionRepository implements IQuestionRepository {
 
     @Transactional
     public void createQuestion(Question question) {
-        /*event.getStartDate();
-      Date date= event.getStartDate();
-      Timestamp timestamp = new Timestamp(date.getTime());
-      event.setStartDate(timestamp);*/
         entityManager.persist(question);
     }
 

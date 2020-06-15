@@ -27,7 +27,7 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
 
     private final EventBus eventBus;
     private ObjectMapper objectMapper;
-    public Map<Integer, List<String>> sessions = new HashMap<>();
+    public Map<Integer, Set<String>> sessions = new HashMap<>();
 
     public Map<String, Reponse> reponseQuizMap = new HashMap<>();
     public Map<String,Score> scoresMap = new HashMap<>();
@@ -75,11 +75,16 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
 
     @Override
     public void register(JsonObject body) {
-        if(body.getString("type").equals("register")) {
-            Integer idEvent = body.getInteger("event");
-            LOG.info(idEvent);
-            this.addSession(idEvent,body.getString("user"));
-        }
+        Integer idEvent = body.getInteger("event");
+        LOG.info(idEvent);
+        this.addSession(idEvent,body.getString("user"));
+    }
+
+    @Override
+    public void logout(JsonObject body) {
+        Integer idEvent = body.getInteger("event");
+        LOG.info(idEvent);
+        this.sessions.get(idEvent).remove(body.getString("user"));
     }
 
     @Override
@@ -127,8 +132,8 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
     }
 
     @Override
-    public List<String> addNewUsers(String user){
-        List<String> users = new ArrayList<>();
+    public Set<String> addNewUsers(String user){
+        Set<String> users = new HashSet<>();
         users.add(user);
         return users ;
     }
