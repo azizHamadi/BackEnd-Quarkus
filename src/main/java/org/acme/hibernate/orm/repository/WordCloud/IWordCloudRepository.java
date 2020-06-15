@@ -11,5 +11,5 @@ public interface IWordCloudRepository {
     WordCloud findWordCloudById(Long id);
     void createWordCloud(WordCloud wordCloud);
     void deleteWordCloud(Long id);
-    List<WordCloud> findByEvent(Long id);
+    List<JSONObject> findByEvent(Long id);
 }

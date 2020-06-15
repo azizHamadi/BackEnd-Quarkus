@@ -45,8 +45,8 @@ public class WordCloudResource {
 
     @GET
     @Path("/event/{id}")
-    public List<WordCloud> getByEvent(@PathParam Long id) {
-        List<WordCloud> wordClouds = wordCloudRepository.findByEvent(id);
+    public List<JSONObject> getByEvent(@PathParam Long id) {
+        List<JSONObject> wordClouds = wordCloudRepository.findByEvent(id);
         return wordClouds;
     }
 }
