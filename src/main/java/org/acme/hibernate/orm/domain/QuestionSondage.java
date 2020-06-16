@@ -55,9 +55,9 @@ public class QuestionSondage {
         this.text = text;
     }
 
-    public Sondage getSondage() {
+    /*public Sondage getSondage() {
         return sondage;
-    }
+    }*/
 
     public void setSondage(Sondage sondage) {
         this.sondage = sondage;

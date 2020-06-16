@@ -1,6 +1,7 @@
-package org.acme.hibernate.orm.repository;
+package org.acme.hibernate.orm.repository.Sondage.Impl;
 
 import org.acme.hibernate.orm.domain.ReponseSondageUser;
+import org.acme.hibernate.orm.repository.Sondage.IReponseSondageUserRepository;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;

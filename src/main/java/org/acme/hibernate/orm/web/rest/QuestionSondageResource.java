@@ -1,7 +1,7 @@
 package org.acme.hibernate.orm.web.rest;
 
 import org.acme.hibernate.orm.domain.QuestionSondage;
-import org.acme.hibernate.orm.repository.QuestionSondageRepository;
+import org.acme.hibernate.orm.repository.Sondage.Impl.QuestionSondageRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

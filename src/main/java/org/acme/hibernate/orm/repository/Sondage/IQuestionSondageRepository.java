@@ -1,4 +1,4 @@
-package org.acme.hibernate.orm.repository;
+package org.acme.hibernate.orm.repository.Sondage;
 
 
 import org.acme.hibernate.orm.domain.QuestionSondage;

@@ -17,10 +17,13 @@ public class Sondage {
             allocationSize = 1,
             initialValue = 10)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sondagesSequence")
-    private Integer id;
+    private Long id;
 
     @Column(length = 100, unique = true)
     private String name;
+
+    @Column
+    private Boolean status;
 
     @ManyToOne
     private Event event;
@@ -28,11 +31,11 @@ public class Sondage {
     @ManyToOne
     private UserDTO user;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -42,6 +45,14 @@ public class Sondage {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     /*public Event getEvent() {
@@ -65,6 +76,7 @@ public class Sondage {
         return "Sondage{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", status=" + status +
                 ", event=" + event +
                 ", user=" + user +
                 '}';

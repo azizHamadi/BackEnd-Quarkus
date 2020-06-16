@@ -1,14 +1,18 @@
-package org.acme.hibernate.orm.repository;
+package org.acme.hibernate.orm.repository.Sondage.Impl;
 
-import org.acme.hibernate.orm.domain.Quiz;
+import org.acme.hibernate.orm.domain.QuestionSondage;
 import org.acme.hibernate.orm.domain.Sondage;
+import org.acme.hibernate.orm.repository.QuizRepository;
+import org.acme.hibernate.orm.repository.Sondage.ISondageRepository;
 import org.jboss.logging.Logger;
+import org.jose4j.json.internal.json_simple.JSONObject;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.ws.rs.WebApplicationException;
+import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -18,6 +22,9 @@ public class SondageRepository implements ISondageRepository {
 
     @Inject
     EntityManager entityManager;
+
+    @Inject
+    QuestionSondageRepository questionSondageRepository;
 
     @Override
     public List<Sondage> findAll() {
@@ -48,9 +55,17 @@ public class SondageRepository implements ISondageRepository {
     }
 
     @Override
-    public List<Sondage> findByEvent(Long id) {
-        List<Sondage> sondage = entityManager.createQuery("select s from Sondage s " +
-                "where s.event = " + id , Sondage.class).getResultList();
-        return sondage ;
+    public List<JSONObject> findByEvent(Long id) {
+        List<Sondage> sondages = entityManager.createQuery("select s from Sondage s " +
+                "where s.status = true and s.event = " + id , Sondage.class).getResultList();
+        List<JSONObject> sondagesObject = new ArrayList<>();
+        sondages.forEach(s-> {
+            List<QuestionSondage> questionSondages = this.questionSondageRepository.findBySondage(s.getId());
+            JSONObject sondage = new JSONObject();
+            sondage.put("sondage",s);
+            sondage.put("questions", questionSondages);
+            sondagesObject.add(sondage);
+        });
+        return sondagesObject ;
     }
 }
