@@ -12,11 +12,11 @@ public class Sondage {
 
     @Id
     @SequenceGenerator(
-            name = "eventsSequence",
-            sequenceName = "events_id_seq",
+            name = "sondagesSequence",
+            sequenceName = "sondages_id_seq",
             allocationSize = 1,
             initialValue = 10)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quizsSequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sondagesSequence")
     private Integer id;
 
     @Column(length = 100, unique = true)

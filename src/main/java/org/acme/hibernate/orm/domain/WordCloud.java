@@ -12,10 +12,10 @@ import java.util.List;
 public class WordCloud {
     @Id
     @SequenceGenerator(
-            name = "questionSondageSequence",
-            sequenceName = "known_questionsSondage_id_seq",
+            name = "wordCloudsSequence",
+            sequenceName = "wordClouds_id_seq",
             initialValue = 4)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionSondageSequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "wordCloudsSequence")
     private Long id;
 
     @Column

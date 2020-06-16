@@ -14,7 +14,7 @@ public class Reponse implements Serializable {
     @Id
     @SequenceGenerator(
             name = "reponseSequence",
-            sequenceName = "known_rep_id_seq",
+            sequenceName = "rep_id_seq",
             allocationSize = 1,
             initialValue = 4)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reponseSequence")

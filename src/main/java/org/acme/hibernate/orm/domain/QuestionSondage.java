@@ -15,7 +15,7 @@ public class QuestionSondage {
     @Id
     @SequenceGenerator(
             name = "questionSondageSequence",
-            sequenceName = "known_questionsSondage_id_seq",
+            sequenceName = "questionsSondage_id_seq",
             initialValue = 4)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionSondageSequence")
     private Long id;

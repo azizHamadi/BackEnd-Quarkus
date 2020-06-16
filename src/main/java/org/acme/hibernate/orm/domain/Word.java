@@ -13,10 +13,17 @@ import java.util.Objects;
 public class Word implements Serializable {
 
     @Id
+    @SequenceGenerator(
+            name = "wordSequence",
+            sequenceName = "words_id_seq",
+            allocationSize = 1,
+            initialValue = 10)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "wordsSequence")
+    private Integer id;
+
     @ManyToOne
     UserDTO userDTO;
 
-    @Id
     @ManyToOne
     WordCloud wordCloud;
 

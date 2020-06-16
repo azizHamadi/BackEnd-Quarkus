@@ -15,7 +15,7 @@ public class Question implements Serializable {
     @Id
     @SequenceGenerator(
             name = "questionSequence",
-            sequenceName = "known_questions_id_seq",
+            sequenceName = "questions_id_seq",
             initialValue = 4)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionSequence")
     private Long id_question;

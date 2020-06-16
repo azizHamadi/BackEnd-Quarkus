@@ -13,7 +13,7 @@ public class ReponseQuestionSondage {
     @Id
     @SequenceGenerator(
             name = "reponseQuestionSondageSequence",
-            sequenceName = "known_repQuesSond_id_seq",
+            sequenceName = "repQuesSond_id_seq",
             allocationSize = 1,
             initialValue = 4)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reponseQuestionSondageSequence")
