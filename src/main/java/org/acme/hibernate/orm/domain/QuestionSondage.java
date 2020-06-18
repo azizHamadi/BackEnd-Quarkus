@@ -30,9 +30,9 @@ public class QuestionSondage {
     private UserDTO user;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Reponse> responses=new ArrayList<>();
+    private List<ReponseQuestionSondage> responses=new ArrayList<>();
 
-    public QuestionSondage(String text, List<Reponse> answers) {
+    public QuestionSondage(String text, List<ReponseQuestionSondage> answers) {
         this.text = text;
         this.responses = answers;
     }
@@ -63,11 +63,11 @@ public class QuestionSondage {
         this.sondage = sondage;
     }
 
-    public List<Reponse> getResponses() {
+    public List<ReponseQuestionSondage> getResponses() {
         return responses;
     }
 
-    public void setResponses(List<Reponse> responses) {
+    public void setResponses(List<ReponseQuestionSondage> responses) {
         this.responses = responses;
     }
 
