@@ -101,15 +101,12 @@ public class SockJsExample {
             String session = body.getInteger("event").toString();
             if(body.getString(PLATEFORME).equals("mobile")){
                 if(message.body().containsKey("type")){
-                    String type = message.body().getString("type");
-                    LOG.info("type");
-                    LOG.info(type);
-                    if(type.equals("register"))
+                    if(message.body().getString("type").equals("register"))
                     {
                         LOG.info("d5al lel if c bon");
                         this.quizHandlerService.register(body);
                     }
-                    else if(type.equals("logout"))
+                    else if(message.body().getString("type").equals("logout"))
                         this.quizHandlerService.logout(body);
                 }
             }
