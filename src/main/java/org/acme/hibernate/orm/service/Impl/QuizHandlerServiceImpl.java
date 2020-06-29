@@ -2,7 +2,6 @@ package org.acme.hibernate.orm.service.Impl;
 
 import javax.inject.Singleton;
 import javax.inject.Inject;
-import javax.json.JsonObjectBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +26,7 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
 
     private final EventBus eventBus;
     private ObjectMapper objectMapper;
-    public Map<Integer, Set<String>> sessions = new HashMap<>();
+    public static Map<Integer, Set<String>> sessions = new HashMap<>();
 
     public Map<String, Reponse> reponseQuizMap = new HashMap<>();
     public Map<String,Score> scoresMap = new HashMap<>();
@@ -75,8 +74,10 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
 
     @Override
     public void register(JsonObject body) {
+        LOG.info("d5al lel register methode lowla");
         Integer idEvent = body.getInteger("event");
         LOG.info(idEvent);
+        LOG.info("d5al lel register body");
         this.addSession(idEvent,body.getString("user"));
     }
 
@@ -84,7 +85,7 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
     public void logout(JsonObject body) {
         Integer idEvent = body.getInteger("event");
         LOG.info(idEvent);
-        this.sessions.get(idEvent).remove(body.getString("user"));
+        QuizHandlerServiceImpl.sessions.get(idEvent).remove(body.getString("user"));
     }
 
     @Override
@@ -103,7 +104,7 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
                 int id_reponse = Math.toIntExact(reponse.getId_reponse());
                 reponseQuizMap.put(user,reponse);
                 Float count = ((float) (reponseQuizMap.values().stream().filter(r ->
-                        r.getId_reponse() == id_reponse).count() * 100) / this.sessions.get(idEvent).size());
+                        r.getId_reponse() == id_reponse).count() * 100) / QuizHandlerServiceImpl.sessions.get(idEvent).size());
                 this.question.getAnswers().stream().filter(r -> r.getId_reponse() == id_reponse).findFirst().get().setCount(count.longValue());
                 this.sendFromMobile(session);
             }
@@ -123,11 +124,11 @@ public class QuizHandlerServiceImpl implements IQuizHandlerService {
 
     @Override
     public void addSession(Integer key, String user){
-        if (sessions.containsKey(key)) {
-            sessions.get(key).add(user);
+        if (QuizHandlerServiceImpl.sessions.containsKey(key)) {
+            QuizHandlerServiceImpl.sessions.get(key).add(user);
         }
         else{
-            sessions.put(key,addNewUsers(user));
+            QuizHandlerServiceImpl.sessions.put(key,addNewUsers(user));
         }
     }
 

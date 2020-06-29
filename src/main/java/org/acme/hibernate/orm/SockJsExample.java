@@ -1,25 +1,22 @@
 package org.acme.hibernate.orm;
 
 import io.quarkus.vertx.ConsumeEvent;
-import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.bridge.BridgeEventType;
-import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.eventbus.bridge.tcp.TcpEventBusBridge;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
-import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import org.acme.hibernate.orm.service.Impl.QuestionHandlerServiceImpl;
 import org.acme.hibernate.orm.service.Impl.QuizHandlerServiceImpl;
+import org.acme.hibernate.orm.service.Impl.SondageHandlerService;
 import org.acme.hibernate.orm.service.Impl.WordCloudHandlerServiceImpl;
 import org.acme.hibernate.orm.service.NotificationService;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.util.*;
@@ -35,19 +32,19 @@ public class SockJsExample {
     private final QuizHandlerServiceImpl quizHandlerService;
     private final QuestionHandlerServiceImpl questionHandlerService;
     private final WordCloudHandlerServiceImpl wordCloudHandlerService;
+    private final SondageHandlerService sondageHandlerService;
     private String session ;
     private BridgeOptionImpl bridgeOption ;
 
     @Inject
-    public SockJsExample(NotificationService notificationService, Vertx vertx, QuizHandlerServiceImpl quizHandlerService, QuestionHandlerServiceImpl questionHandlerService, WordCloudHandlerServiceImpl wordCloudHandlerService, BridgeOptionImpl bridgeOption) {
+    public SockJsExample(NotificationService notificationService, Vertx vertx, QuizHandlerServiceImpl quizHandlerService, QuestionHandlerServiceImpl questionHandlerService, WordCloudHandlerServiceImpl wordCloudHandlerService, SondageHandlerService sondageHandlerService, BridgeOptionImpl bridgeOption) {
         this.notificationService = notificationService;
         this.vertx = vertx;
-        //jdida lel test hedhi
-        this.vertx.timerStream(3601000);
         this.eventBus = vertx.eventBus();
         this.quizHandlerService = quizHandlerService;
         this.questionHandlerService = questionHandlerService;
         this.wordCloudHandlerService = wordCloudHandlerService;
+        this.sondageHandlerService = sondageHandlerService;
         this.bridgeOption = bridgeOption;
     }
 
@@ -59,6 +56,7 @@ public class SockJsExample {
             this.registerQuiz();
             this.registerQuestion();
             this.registerWordCloud();
+            this.registerSondage();
             this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.QUESTION.toString(),"client/" + PollEnum.QUESTION.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.QUIZ.toString(),"client/" + PollEnum.QUIZ.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.WORDCLOUD.toString(),"client/" + PollEnum.WORDCLOUD.toString() + "/" + session);
@@ -103,9 +101,15 @@ public class SockJsExample {
             String session = body.getInteger("event").toString();
             if(body.getString(PLATEFORME).equals("mobile")){
                 if(message.body().containsKey("type")){
-                    if(message.body().getString("type") == "register")
+                    String type = message.body().getString("type");
+                    LOG.info("type");
+                    LOG.info(type);
+                    if(type.equals("register"))
+                    {
+                        LOG.info("d5al lel if c bon");
                         this.quizHandlerService.register(body);
-                    else if(message.body().getString("type") == "logout")
+                    }
+                    else if(type.equals("logout"))
                         this.quizHandlerService.logout(body);
                 }
             }
@@ -144,6 +148,9 @@ public class SockJsExample {
             String session = body.getInteger("event").toString();
             if(body.getString(PLATEFORME).equals("mobile")){
                 //sondage methode
+            }
+            else if ( body.getString(PLATEFORME).equals("server")){
+                this.sondageHandlerService.generateResult(body,session);
             }
         });
     }
