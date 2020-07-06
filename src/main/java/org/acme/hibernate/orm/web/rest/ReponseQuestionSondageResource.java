@@ -38,4 +38,10 @@ public class ReponseQuestionSondageResource {
         return Response.status(204).build();
     }
 
+    @PUT
+    public Response update(@QueryParam("id") Long id, @QueryParam("count") Double count) {
+        reponseQuestionSondageRepository.updateReponseQuestionSondage(id,count);
+        return Response.status(204).build();
+    }
+
 }

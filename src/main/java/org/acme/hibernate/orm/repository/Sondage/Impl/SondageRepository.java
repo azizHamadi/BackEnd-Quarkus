@@ -1,11 +1,17 @@
 package org.acme.hibernate.orm.repository.Sondage.Impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.acme.hibernate.orm.domain.QuestionSondage;
+import org.acme.hibernate.orm.domain.ReponseSondageUser;
 import org.acme.hibernate.orm.domain.Sondage;
 import org.acme.hibernate.orm.repository.QuizRepository;
 import org.acme.hibernate.orm.repository.Sondage.ISondageRepository;
+import org.acme.hibernate.orm.service.Impl.QuizHandlerServiceImpl;
 import org.jboss.logging.Logger;
 import org.jose4j.json.internal.json_simple.JSONObject;
+import org.jose4j.json.internal.json_simple.parser.JSONParser;
+import org.jose4j.json.internal.json_simple.parser.ParseException;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -25,6 +31,9 @@ public class SondageRepository implements ISondageRepository {
 
     @Inject
     QuestionSondageRepository questionSondageRepository;
+
+    @Inject
+    ReponseSondageUserRepository reponseSondageUserRepository;
 
     @Override
     public List<Sondage> findAll() {

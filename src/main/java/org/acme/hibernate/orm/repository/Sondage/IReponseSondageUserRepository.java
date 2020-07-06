@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IReponseSondageUserRepository {
 
-    /*List<ReponseSondageUser> getReponsebyQuestion(Question questionMessage, Long id);*/
+    List<ReponseSondageUser> getReponseUserByReponse(Long id);
 
     void addReponseSondageUser(ReponseSondageUser reponseSondageUser);
 

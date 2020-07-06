@@ -44,4 +44,13 @@ public class ReponseQuestionSondageRepository implements IReponseQuestionSondage
         ReponseQuestionSondage rqs = findEventById(id);
         entityManager.remove(rqs);
     }
+
+    @Override
+    @Transactional
+    public void updateReponseQuestionSondage(Long id, Double count) {
+        ReponseQuestionSondage reponseQuestionSondage = entityManager.find(ReponseQuestionSondage.class, id);
+        reponseQuestionSondage.setCount(count);
+        entityManager.flush();
+    }
+
 }

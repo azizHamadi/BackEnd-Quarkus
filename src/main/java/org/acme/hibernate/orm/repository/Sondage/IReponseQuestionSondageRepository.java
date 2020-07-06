@@ -10,4 +10,5 @@ public interface IReponseQuestionSondageRepository {
     ReponseQuestionSondage findEventById(Long id);
     void createReponseQuestionSondage(ReponseQuestionSondage reponseQuestionSondage);
     void deleteReponseQuestionSondage(Long id);
+    void updateReponseQuestionSondage(Long id, Double count);
 }

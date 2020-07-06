@@ -22,6 +22,9 @@ public class ReponseQuestionSondage {
     @Column
     private String text_reponse;
 
+    @Column
+    private Double count;
+
     @OneToMany(mappedBy = "reponseQuestionSondage")
     List<ReponseSondageUser> reponseSondageUsers;
 
@@ -48,12 +51,21 @@ public class ReponseQuestionSondage {
         this.text_reponse = text_reponse;
     }
 
-    @Override
-    public String toString() {
-        return "Reponse{" +
-                "id_reponse=" + id_reponse +
-                ", text_reponse='" + text_reponse + '\'' +
-                '}';
+    public Double getCount() {
+        return count;
     }
 
+    public void setCount(Double count) {
+        this.count = count;
+    }
+
+    @Override
+    public String toString() {
+        return "ReponseQuestionSondage{" +
+                "id_reponse=" + id_reponse +
+                ", text_reponse='" + text_reponse + '\'' +
+                ", count=" + count +
+                ", reponseSondageUsers=" + reponseSondageUsers +
+                '}';
+    }
 }
