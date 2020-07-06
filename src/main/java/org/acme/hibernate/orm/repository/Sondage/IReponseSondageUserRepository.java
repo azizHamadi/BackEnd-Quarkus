@@ -8,8 +8,8 @@ public interface IReponseSondageUserRepository {
 
     /*List<ReponseSondageUser> getReponsebyQuestion(Question questionMessage, Long id);*/
 
-    void addReponseSondageUser(ReponseSondageUser reponseSondageUser, Long id);
+    void addReponseSondageUser(ReponseSondageUser reponseSondageUser);
 
-    void deleteReponseSondageUser(ReponseSondageUser reponseSondageUser, Long id);
+    void deleteReponseSondageUser(Long id);
 
 }

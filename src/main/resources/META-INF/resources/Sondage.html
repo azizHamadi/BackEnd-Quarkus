@@ -45,6 +45,7 @@
     <div class="row">
         <input class="col-md-6" id="msg" type="text" placeholder="enter your message">
         <button class="col-md-1 btn btn-primary" id="send" type="button" disabled>send question</button>
+        <button class="col-md-1 btn btn-primary" id="result" type="button">send result</button>
     </div>
 
 </div>
@@ -62,6 +63,7 @@
     $(document).ready(function () {
         $("#connect").click(connect);
         $("#send").click(sendMessage);
+        $("#result").click(sendResult);
 
         $("#name").keypress(function (event) {
             if (event.keyCode == 13 || event.which == 13) {
@@ -129,6 +131,21 @@
             jsonObject["plateforme"] = "web";
             jsonObject["event"] = parseInt(token,10);
             jsonObject["mode"] = "sondage";
+            console.log(jsonObject)
+            eventBus.send("server/sondage", jsonObject)
+            $("#msg").val("");
+        }
+    };
+
+    var sendResult = function () {
+        if (connected) {
+            var value = $("#msg").val();
+            console.log("Sending " + value);
+            var jsonObject = {};
+            jsonObject["body"] = value;
+            jsonObject["plateforme"] = "web";
+            jsonObject["event"] = parseInt(token,10);
+            jsonObject["mode"] = "result";
             console.log(jsonObject)
             eventBus.send("server/sondage", jsonObject)
             $("#msg").val("");
