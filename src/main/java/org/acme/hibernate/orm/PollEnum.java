@@ -24,5 +24,11 @@ public enum PollEnum {
         public String toString(){
             return "sondage";
         }
+    },
+    FEEDBACK {
+        @Override
+        public String toString(){
+            return "feedback";
+        }
     }
 }

@@ -28,16 +28,18 @@ public class NotificationServiceImpl implements NotificationService {
     private final QuestionHandlerServiceImpl questionHandlerService;
     private final WordCloudHandlerServiceImpl wordCloudHandlerService;
     private final SondageHandlerService sondageHandlerService;
+    private final FeedbackHandlerServiceImpl feedbackHandlerService ;
     private ObjectMapper objectMapper;
     public Question question;
 
     @Inject
-    public NotificationServiceImpl(EventBus eventBus, QuizHandlerServiceImpl quizHandlerService, QuestionHandlerServiceImpl questionHandlerService, WordCloudHandlerServiceImpl wordCloudHandlerService, SondageHandlerService sondageHandlerService) {
+    public NotificationServiceImpl(EventBus eventBus, QuizHandlerServiceImpl quizHandlerService, QuestionHandlerServiceImpl questionHandlerService, WordCloudHandlerServiceImpl wordCloudHandlerService, SondageHandlerService sondageHandlerService, FeedbackServiceImpl feedbackService, FeedbackHandlerServiceImpl feedbackHandlerService) {
         this.eventBus = eventBus;
         this.quizHandlerService = quizHandlerService;
         this.questionHandlerService = questionHandlerService;
         this.wordCloudHandlerService = wordCloudHandlerService;
         this.sondageHandlerService = sondageHandlerService;
+        this.feedbackHandlerService = feedbackHandlerService;
         objectMapper = new ObjectMapper();
     }
 
@@ -92,6 +94,9 @@ public class NotificationServiceImpl implements NotificationService {
         }
         else if( model.equals("server/" + PollEnum.SONDAGE.toString() )){ /////// wordCloud handler ///////////
             this.sondageHandlerService.sendSondageWeb(event,eventBus,session);
+        }
+        else if( model.equals("server/" + PollEnum.FEEDBACK.toString() )){ /////// wordCloud handler ///////////
+            this.feedbackHandlerService.sendFeedbackWeb(event,eventBus,session);
         }
     }
 

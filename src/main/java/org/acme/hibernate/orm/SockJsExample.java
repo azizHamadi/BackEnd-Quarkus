@@ -61,10 +61,12 @@ public class SockJsExample {
             this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.QUIZ.toString(),"client/" + PollEnum.QUIZ.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.WORDCLOUD.toString(),"client/" + PollEnum.WORDCLOUD.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.SONDAGE.toString(),"client/" + PollEnum.SONDAGE.toString() + "/" + session);
+            this.bridgeOption.setBridgeOptionMobile("server/" + PollEnum.FEEDBACK.toString(),"client/" + PollEnum.FEEDBACK.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionWeb("server/" + PollEnum.QUESTION.toString() ,"client/" + PollEnum.QUESTION.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionWeb("server/" + PollEnum.QUIZ.toString() ,"client/" + PollEnum.QUIZ.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionWeb("server/" + PollEnum.WORDCLOUD.toString() ,"client/" + PollEnum.WORDCLOUD.toString() + "/" + session);
             this.bridgeOption.setBridgeOptionWeb("server/" + PollEnum.SONDAGE.toString() ,"client/" + PollEnum.SONDAGE.toString() + "/" + session);
+            this.bridgeOption.setBridgeOptionWeb("server/" + PollEnum.FEEDBACK.toString() ,"client/" + PollEnum.FEEDBACK.toString() + "/" + session);
             TcpEventBusBridge bridge = TcpEventBusBridge.create(
                     vertx,
                     this.bridgeOption.getBridgeOptionMobile()
@@ -79,7 +81,7 @@ public class SockJsExample {
     private SockJSHandler eventBusHandler(EventBus eventBus ) {
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
 
-        sockJSHandler.bridge(this.bridgeOption .getBridgeOptionWeb(), event -> {
+        sockJSHandler.bridge(this.bridgeOption.getBridgeOptionWeb(), event -> {
             if (event.type() == BridgeEventType.SOCKET_CREATED) {
                 notificationService.onOpen(event,eventBus);
             }
