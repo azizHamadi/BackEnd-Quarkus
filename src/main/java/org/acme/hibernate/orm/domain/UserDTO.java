@@ -42,6 +42,9 @@ public class UserDTO implements Serializable {
     @OneToMany(mappedBy = "userDTO")
     List<Word> words;
 
+    @OneToMany(mappedBy = "userDTO")
+    List<ReponseFeedBackUser> reponseFeedBackUsers;
+
     public UserDTO() {
     }
 
@@ -126,6 +129,10 @@ public class UserDTO implements Serializable {
 
     public void setWords(List<Word> words) {
         this.words = words;
+    }
+
+    public void setReponseFeedBackUsers(List<ReponseFeedBackUser> reponseFeedBackUsers) {
+        this.reponseFeedBackUsers = reponseFeedBackUsers;
     }
 
     @Override

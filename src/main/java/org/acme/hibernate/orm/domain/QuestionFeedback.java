@@ -2,7 +2,6 @@ package org.acme.hibernate.orm.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,6 +31,8 @@ public class QuestionFeedback implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ReponseFeedback> responses;
 
+    @OneToMany(mappedBy = "questionFeedback")
+    List<ReponseFeedBackUser> reponseFeedBackUsers;
 
     public QuestionFeedback() {
 
