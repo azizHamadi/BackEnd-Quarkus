@@ -71,4 +71,10 @@ public class EventResource {
         return events ;
     }
 
+    @GET
+    @Path("/notification/{id}")
+    public String subscribeEvent(@PathParam int id){
+        return eventRepository.subscribeFirebaseEvent(id);
+    }
+
 }

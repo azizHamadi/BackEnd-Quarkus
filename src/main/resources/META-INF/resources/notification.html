@@ -1,0 +1,72 @@
+<html>
+<title>Firebase Messaging Demo</title>
+<style>
+    div {
+        margin-bottom: 15px;
+    }
+</style>
+<body>
+<div id="token"></div>
+<div id="msg"></div>
+<div id="notis"></div>
+<div id="err"></div>
+<script>
+    MsgElem = document.getElementById("msg")
+    TokenElem = document.getElementById("token")
+    NotisElem = document.getElementById("notis")
+    ErrElem = document.getElementById("err")
+</script>
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-messaging.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyAutAtFyJplHfClOy3oxb9_VC4WBzNGO3s",
+        authDomain: "slido-5ecb3.firebaseapp.com",
+        databaseURL: "https://slido-5ecb3.firebaseio.com",
+        projectId: "slido-5ecb3",
+        storageBucket: "slido-5ecb3.appspot.com",
+        messagingSenderId: "386336812574",
+        appId: "1:386336812574:web:471fae526fa17afa67080f"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+</script>
+<script>
+
+    const messaging = firebase.messaging();
+    messaging
+        .requestPermission()
+        .then(function () {
+            MsgElem.innerHTML = "Notification permission granted."
+            console.log("Notification permission granted.");
+        })
+        .catch(function (err) {
+            ErrElem.innerHTML = ErrElem.innerHTML + "; " + err
+            console.log("Unable to get permission to notify.", err);
+        });
+    messaging
+        .requestPermission()
+        .then(function () {
+            MsgElem.innerHTML = "Notification permission granted."
+            console.log("Notification permission granted.");
+
+            // get the token in the form of promise
+            return messaging.getToken()
+        })
+        .then(function(token) {
+            // print the token on the HTML page
+            TokenElem.innerHTML = "token is : " + token
+        })
+        .catch(function (err) {
+            ErrElem.innerHTML = ErrElem.innerHTML + "; " + err
+            console.log("Unable to get permission to notify.", err);
+        });
+</script>
+
+</body>
+</html>
