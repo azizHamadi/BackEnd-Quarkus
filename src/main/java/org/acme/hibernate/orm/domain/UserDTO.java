@@ -45,6 +45,9 @@ public class UserDTO implements Serializable {
     @OneToMany(mappedBy = "userDTO")
     List<ReponseFeedBackUser> reponseFeedBackUsers;
 
+    @OneToMany(mappedBy = "userDTO")
+    List<Notification> notifications;
+
     public UserDTO() {
     }
 

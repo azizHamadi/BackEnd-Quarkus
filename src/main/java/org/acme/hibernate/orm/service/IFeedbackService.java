@@ -11,6 +11,5 @@ public interface IFeedbackService {
     List<JSONObject> findByEvent(int id);
     Feedback createFeedback(Feedback feedback);
     List<JSONObject> findByEventW(int id);
-    public JSONObject getFeedbackById(int id);
-
+    JSONObject getFeedbackById(int id);
 }

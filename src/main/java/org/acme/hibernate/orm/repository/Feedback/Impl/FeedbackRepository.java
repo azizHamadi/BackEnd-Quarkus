@@ -47,7 +47,7 @@ public class FeedbackRepository implements IFeedbackRepository {
         }
         List<QuestionFeedback> questionFeedbacks = this.questionFeedbackRepository.findByFeedback(feedback.getId());
         JSONObject feedback1 = new JSONObject();
-        feedback1.put("sondage",feedback);
+        feedback1.put("feedback",feedback);
         feedback1.put("questions", questionFeedbacks);
         return feedback1;
     }
@@ -69,7 +69,7 @@ public class FeedbackRepository implements IFeedbackRepository {
     }
     @Override
     public List<JSONObject> findByEventW(int id) {
-        List<Feedback> feedbacks = entityManager.createQuery("select f from Sondage f " +
+        List<Feedback> feedbacks = entityManager.createQuery("select f from Feedback f " +
                 "where f.event = " + id , Feedback.class).getResultList();
         List<JSONObject> feedbcksObject = new ArrayList<>();
         feedbacks.forEach(f-> {
@@ -89,6 +89,13 @@ public class FeedbackRepository implements IFeedbackRepository {
         feedback1.setStatus(true);
         entityManager.flush();
         return feedback1;
+    }
+
+    @Override
+    public List<Feedback> findByEventObject(int id) {
+        List<Feedback> feedbacks = entityManager.createQuery("select f from Feedback f " +
+                "where f.event = " + id , Feedback.class).getResultList();
+        return feedbacks ;
     }
 
     @Override

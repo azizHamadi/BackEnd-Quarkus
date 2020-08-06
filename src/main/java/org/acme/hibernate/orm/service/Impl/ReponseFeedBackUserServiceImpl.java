@@ -27,4 +27,9 @@ public class ReponseFeedBackUserServiceImpl implements IReponseFeedBackUserServi
     public void create(ReponseFeedBackUser reponseFeedBackUser) {
         reponseFeedBackUserRepository.create(reponseFeedBackUser);
     }
+
+    @Override
+    public List<ReponseFeedBackUser> findByUserQuestion(String idUser, int idevent) {
+        return reponseFeedBackUserRepository.findByUserQuestion(idUser, idevent);
+    }
 }

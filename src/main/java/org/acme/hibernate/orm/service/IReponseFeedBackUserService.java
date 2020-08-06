@@ -7,4 +7,5 @@ public interface IReponseFeedBackUserService {
     List<ReponseFeedBackUser> findAll();
     ReponseFeedBackUser findSingle(int id);
     void create(ReponseFeedBackUser reponseFeedBackUser);
+    List<ReponseFeedBackUser> findByUserQuestion(String idUser, int idQuestion);
 }

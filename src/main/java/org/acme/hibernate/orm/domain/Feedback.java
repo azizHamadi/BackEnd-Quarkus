@@ -39,6 +39,10 @@ public class Feedback implements Serializable {
         this.name = name;
     }
 
+    /*public Event getEvent() {
+        return event;
+    }*/
+
     public void setEvent(Event event) {
         this.event = event;
     }

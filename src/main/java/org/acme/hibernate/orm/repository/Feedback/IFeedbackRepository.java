@@ -10,7 +10,8 @@ public interface IFeedbackRepository {
     Feedback findFeedbackById(int id);
     List<JSONObject> findByEvent(int id);
     Feedback createFeedback(Feedback feedback);
-    public JSONObject getFeedbackById(int id);
-    public List<JSONObject> findByEventW(int id);
+    JSONObject getFeedbackById(int id);
+    List<JSONObject> findByEventW(int id);
     Feedback updateFeedback(Feedback feedback);
+    List<Feedback> findByEventObject(int id);
 }

@@ -1,7 +1,9 @@
 package org.acme.hibernate.orm.domain;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Event")
@@ -9,7 +11,7 @@ import java.util.Date;
         query = "SELECT e FROM Event e ORDER BY e.name",
         hints = @QueryHint(name = "org.hibernate.cacheable", value = "true") )
 @Cacheable
-public class Event {
+public class Event implements Serializable {
     @Id
     @SequenceGenerator(
             name = "eventsSequence",
@@ -42,6 +44,9 @@ public class Event {
 
     @ManyToOne
     private UserDTO user;
+
+    @OneToMany(mappedBy = "event")
+    List<Notification> notifications;
 
     public Event() {
     }
@@ -127,5 +132,13 @@ public class Event {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    /*public List<Notification> getNotifications() {
+        return notifications;
+    }*/
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 }

@@ -32,6 +32,12 @@ public class ReponseFeedBackUserResource {
         return reponseFeedBackUserService.findSingle(id);
     }
 
+    @GET
+    @Path("findByUserQuestion/{idUser}/{idevent}")
+    public List<ReponseFeedBackUser> findByUserQuestion(@PathParam("idUser") String idUser, @PathParam("idevent") int idevent) {
+        return reponseFeedBackUserService.findByUserQuestion(idUser,idevent);
+    }
+
     @POST
     public ReponseFeedBackUser create(ReponseFeedBackUser reponseFeedBackUser) {
         reponseFeedBackUserService.create(reponseFeedBackUser);
